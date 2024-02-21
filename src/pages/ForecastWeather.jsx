@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Footer from "../components/footer";
 import navigate from "../inc/scripts/utilities";
-import Button from "./../components/button";
 import jQuery from "jquery";
 import { db } from "../backend/app_backend";
 import * as currentWeather from "./../apis/getCurrentWeather";
@@ -89,13 +88,6 @@ const ForecastWeather = () => {
 		});
 	}, []);
 
-	const addUtilityComponentHeight = () => {
-		jQuery(($) => {
-			$.noConflict();
-			$(".cmp").removeClass("d-none");
-			$(".utility-component").toggleClass("add-utility-component-height");
-		});
-	};
 	class WeatherTemplate {
 		constructor(id, time, icon, unit, title) {
 			this.id = id;
@@ -345,27 +337,6 @@ const ForecastWeather = () => {
 
 		return fifthWeatherDataForecast;
 	};
-
-	const navigateToApp = () => {
-		navigate("/weather");
-	};
-	const MainWeatherComponent = () => {
-		return (
-			<section className="d-flex align-items-center justify-content-center">
-				<Button
-					text="текущий прогноз погоды"
-					className="shadow brand-btn-2 toggle-width-3 my-5 "
-					onClick={navigateToApp}
-				/>
-			</section>
-		);
-	};
-
-	const showMainWeatherComponent = () => {
-		addUtilityComponentHeight();
-		setComponentToInsert(<MainWeatherComponent />);
-	};
-
 	const navigateHome = () => {
 		navigate("/weather");
 	};

@@ -86,11 +86,6 @@ const WeatherApp = () => {
 
 		return uiData;
 	};
-
-	const showMoreWeather = () => {
-		navigate("weathermain");
-	};
-
 	const SearchComponent = () => {
 		const [searchValue, setSearchValue] = useState("");
 		return (
@@ -219,8 +214,7 @@ const WeatherApp = () => {
 				</section>
 				<section
 					role="button"
-					className="mx-2 rounded-3 shadow mt-3 mb-5 py-2 current-weather-assets d-flex align-items-center justify-content-around text-center"
-					onClick={showMoreWeather}>
+					className="mx-2 rounded-3 shadow mt-3 mb-5 py-2 current-weather-assets d-flex align-items-center justify-content-around text-center">
 					<section className="current-weather-wind-speed d-flex flex-column align-items-center justify-content-center">
 						<section className="wind-icon py-1">
 							<div className="indicator">

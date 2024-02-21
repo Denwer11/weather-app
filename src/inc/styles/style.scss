@@ -376,9 +376,9 @@ section.footer-nav > section {
 	margin-left: 15px;
 }
 .main-weather-icon {
-	scale: (5);
-	margin-top: 50px;
-	margin-left: 80px;
+	height: 150px;
+	width: 150px;
+	margin-top: 20px;
 	color: var(--text-color);
 }
 .current-weather-value {
@@ -422,8 +422,8 @@ section.footer-nav > section {
 		font-size: 6rem;
 	}
 	.main-weather-icon {
-		scale: (3.5);
-		margin-left: 50px;
+		height: 70px;
+		width: 70px;
 	}
 }
 @media (max-width: 1200px) {
