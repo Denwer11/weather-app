@@ -15,7 +15,7 @@ function App() {
 		: (DEFAULT_ROUTE_PAGE = <Home />);
 
 	return (
-		<BrowserRouter basename={process.env.PUBLIC_URL}>
+		<BrowserRouter>
 			<Routes>
 				<Route index element={DEFAULT_ROUTE_PAGE} />
 				<Route path="weather" element={<WeatherApp />} />
