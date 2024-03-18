@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
-import Footer from "../components/footer";
+import Footer from "../components/Footer";
 import navigate from "../inc/scripts/utilities";
 import jQuery from "jquery";
 import { db } from "../backend/app_backend";
 import * as currentWeather from "./../apis/getCurrentWeather";
-import ForecastDailyWeatherComponent from "./../components/forecastWeatherComponent";
+import ForecastDailyWeatherComponent from "./../components/ForecastWeatherComponent";
 import Swal from "sweetalert2";
 import * as utilis from "./../inc/scripts/utilities";
-import Header from "../components/header";
+import Header from "../components/Header";
 
 const ForecastWeather = () => {
 	if (!db.get("HOME_PAGE_SEEN")) {

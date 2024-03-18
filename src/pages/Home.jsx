@@ -1,7 +1,7 @@
 import React from "react";
-import Button from "./../components/button";
+import Button from "./../components/Button";
 import Img_1 from "./../assets/images/home.png";
-import Spinner from "./../components/spinner";
+import Spinner from "./../components/Spinner";
 import navigate from "./../inc/scripts/utilities";
 import { db } from "./../backend/app_backend";
 import Swal from "sweetalert2";

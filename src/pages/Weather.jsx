@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import jQuery from "jquery";
-import Button from "./../components/button";
-import Footer from "../components/footer";
-import FutureWeatherComponent from "../components/futureWeatherComponent";
+import Button from "./../components/Button";
+import Footer from "../components/Footer";
+import FutureWeatherComponent from "../components/FutureWeatherComponent";
 import navigate from "../inc/scripts/utilities";
-import Spinner from "../components/spinner";
+import Spinner from "../components/Spinner";
 import Ripple from "./../assets/images/ripple.gif";
 import Location from "./../assets/images/map.png";
 import * as formHandler from "./../apis/getCurrentWeather";
@@ -14,7 +14,7 @@ import OvercastCloud from "./../assets/icons/overcast-clouds.svg";
 import WindIcon from "./../assets/icons/wind.svg";
 import HumidityIcon from "./../assets/icons/humidity.png";
 import PressureIcon from "./../assets/icons/pressure.svg";
-import Header from '../components/header';
+import Header from '../components/Header';
 
 
 const WeatherApp = () => {

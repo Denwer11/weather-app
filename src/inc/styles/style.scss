@@ -97,7 +97,6 @@ html[data-theme="ligth"] {
 
 .brand-btn {
 	border-radius: 30px;
-	background: var(#{--search-btn-color-default});
 	transition: 0.9s;
 	padding: 15px;
 	text-align: center;
@@ -149,7 +148,7 @@ html[data-theme="ligth"] {
 }
 
 .brand-bg-mute {
-	background: var(---mute-color);
+	background: var(--mute-color);
 }
 
 .brand-bg-white {

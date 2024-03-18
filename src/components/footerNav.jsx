@@ -1,5 +1,5 @@
 import React from "react";
-import navigate from "./../inc/scripts/utilities";
+import navigate from "../inc/scripts/utilities";
 
 const FooterNav = (props) => {
 	const appNavigation = () => {
@@ -12,10 +12,10 @@ const FooterNav = (props) => {
 
 	return (
 		<React.Fragment>
-			<section className="footer-nav d-flex flex-row align-items-center justify-content-around ">
+			<section className="footer-nav d-flex flex-row align-items-center justify-content-around">
 				<section
 					role="button"
-					className="footer-app-section brand-text-mute text-center "
+					className="footer-app-section brand-text-mute text-center"
 					onClick={appNavigation}>
 					<section className="footer-icons footer-app-svg-section d-flex align-items-center justify-content-center my-2">
 						<svg

@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import Footer from "../components/footer";
+import Footer from "../components/Footer";
 import navigate from "../inc/scripts/utilities";
-import Button from "../components/button";
-import Spinner from "../components/spinner";
+import Button from "../components/Button";
+import Spinner from "../components/Spinner";
 import { db } from "../backend/app_backend";
 import * as settings from "./../backend/settings";
-import Header from '../components/header';
+import Header from '../components/Header';
 const Settings = () => {
 	const navigateHome = () => {
 		navigate("./weather");

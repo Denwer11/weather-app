@@ -1,4 +1,4 @@
-import React, {useMemo} from "react";
+import React from "react";
 import jQuery from "jquery";
 
 const UtilityComponent = (props) => {
