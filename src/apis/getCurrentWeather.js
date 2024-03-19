@@ -244,7 +244,7 @@ export const getCurrentWeather = (location) => {
 						timer: 1000,
 					});
 				} else {
-					if (result.cod === 200) {
+					if (result.cod == 200) {
 						updateReactDom(result);
 					}
 				}
