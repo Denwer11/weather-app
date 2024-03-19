@@ -47,16 +47,17 @@ body {
 	--input-border-radius: 5px;
 	--button-3-border-radius: 5px;
 	--small-text-2: 0.7rem;
+	--indicator-name-color: #939cb0;
 }
 html[data-theme="dark"] {
-	--cloud: url("../../assets/images/cloud-dark.png");
-	--body-background: #0d1117;
+	--cloud: url("../../assets/images/back-dark.png");
+	--body-background: #2e3035;
 	--components-background: #4f4f4f;
 	--card-background: #2e3035;
 	--card-shadow: 0px 3px 20px rgba(5, 5, 5, 0.28);
 	--text-color: #fff;
 	--btn-color: #fff;
-	--footer-background: #0d1117;
+	--footer-background: #2e3035;
 	--mute-color: #fff;
 	--circle-gradient: linear-gradient(
 		0deg,
@@ -64,9 +65,11 @@ html[data-theme="dark"] {
 		#0d1117 50%,
 		rgba(255, 255, 255, 0) 100%
 	);
+	--text-color-btn: #292929;
+	--indicator-name-color: #c4c4c4;
 }
-html[data-theme="ligth"] {
-	--cloud: url("../../assets/images/cloud-ligth.png");
+html[data-theme="light"] {
+	--cloud: url("../../assets/images/back-light.png");
 	--body-background: #fff;
 	--components-background: #fff;
 	--card-background: rgba(71, 147, 255, 0.2);
@@ -81,6 +84,7 @@ html[data-theme="ligth"] {
 		rgba(255, 255, 255, 1) 50%,
 		rgba(255, 255, 255, 0) 100%
 	);
+	--text-color-btn: #292929;
 }
 #spinner {
 	background: ghostwhite;
@@ -104,7 +108,7 @@ html[data-theme="ligth"] {
 	border: none;
 	outline: none;
 	width: 75vw;
-	color: var(--text-color);
+	color: var(--text-color-btn);
 }
 
 .brand-btn-2 {
@@ -358,7 +362,7 @@ section.footer-nav > section {
 	z-index: 5;
 }
 .indicator-name {
-	color: var(--base-color);
+	color: var(--indicator-name-color);
 }
 .indicator-value {
 	color: var(--text-color);

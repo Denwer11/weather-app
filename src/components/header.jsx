@@ -2,7 +2,7 @@ import React from "react";
 import { db } from "../backend/app_backend";
 import Logo from "../assets/icons/logo.svg";
 import { useTheme } from "../hooks/useTheme";
-import ThemeLigth from "./../assets/icons/theme-ligth.svg";
+import ThemeLight from "./../assets/icons/theme-light.svg";
 import ThemeDark from "./../assets/icons//theme-dark.svg";
 import { getCurrentDate } from "../inc/scripts/utilities";
 
@@ -10,7 +10,7 @@ const Header = () => {
 	const { theme, setTheme } = useTheme();
 
 	const changeTheme = () => {
-		setTheme(theme === "ligth" ? "dark" : "ligth");
+		setTheme(theme === "light" ? "dark" : "light");
 	};
 	return (
 		<section className="app-header d-flex justify-content-between px-2 flex-row-reverse flex-wrap">
@@ -26,7 +26,7 @@ const Header = () => {
 			</div>
 			<div className="change-theme" onClick={changeTheme}>
 				<img
-					src={theme === "ligth" ? ThemeLigth : ThemeDark}
+					src={theme === "light" ? ThemeLight : ThemeDark}
 					alt="change-theme icon"
 					id="change-theme"
 					className="change-theme-icon"

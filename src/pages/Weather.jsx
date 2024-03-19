@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext, useCallback } from "react";
 import jQuery from "jquery";
 import Button from "./../components/button";
 import Footer from "../components/footer";
@@ -14,19 +14,24 @@ import OvercastCloud from "./../assets/icons/overcast-clouds.svg";
 import WindIcon from "./../assets/icons/wind.svg";
 import HumidityIcon from "./../assets/icons/humidity.png";
 import PressureIcon from "./../assets/icons/pressure.svg";
-import Header from '../components/header';
-
+import Header from "../components/header";
+import { AppContext } from "../AppContext";
+import { debounce } from "lodash";
+import * as utilis from "./../inc/scripts/utilities";
+import * as currentWeather from "./../apis/getCurrentWeather";
+import Swal from "sweetalert2";
+import ForecastDailyWeatherComponent from "../components/forecastWeatherComponent";
 
 const WeatherApp = () => {
 	if (!db.get("HOME_PAGE_SEEN")) {
 		navigate("/");
 	}
-	
 
 	const [componentToInsert, setComponentToInsert] = useState("");
-	const [weatherInput, setWeatherInput] = useState();
-	let savedLocation;
+	const { weatherInput, setWeatherInput } = useContext(AppContext);
+	const { forecastData, setforecastData } = useContext(AppContext);
 
+	let savedLocation;
 	savedLocation = db.get("USER_DEFAULT_LOCATION");
 
 	const addUtilityComponentHeight = () => {
@@ -48,6 +53,9 @@ const WeatherApp = () => {
 			this.unit = unit;
 		}
 	}
+	useEffect(() => {
+		formHandler.handleWeatherForm1(savedLocation);
+	}, [weatherInput]);
 
 	const mapDbSavedData = () => {
 		const count = 8;
@@ -55,9 +63,9 @@ const WeatherApp = () => {
 		let weatherData = [];
 
 		for (let i = 0; i < count; i++) {
-			const FORECAST_TIME = db.get(`WEATHER_FORECAST_TIME_${i}`) || "12pm";
-			const FORECAST_ICON = db.get(`WEATHER_FORECAST_ICON_${i}`) || "800";
-			const FORECAST_UNIT = db.get(`WEATHER_FORECAST_UNIT_${i}`) || "26";
+			const FORECAST_TIME = db.get(`WEATHER_FORECAST_TIME_${i}`) || `${i * 3}:00`;
+			const FORECAST_ICON = db.get(`WEATHER_FORECAST_ICON_${i}`) || "802";
+			const FORECAST_UNIT = db.get(`WEATHER_FORECAST_UNIT_${i}`) || "0";
 
 			weatherData.push(
 				new MappedSavedDataTemplate(
@@ -86,8 +94,20 @@ const WeatherApp = () => {
 
 		return uiData;
 	};
+
 	const SearchComponent = () => {
 		const [searchValue, setSearchValue] = useState("");
+		const updateSearchValue = useCallback(
+			debounce((str) => {
+				setSearchValue(str);
+			}, 200),
+			[]
+		);
+
+		const changeInput = (e) => {
+			setSearchValue(e.target.value);
+			updateSearchValue(e.target.value);
+		};
 		return (
 			<section className="cmp d-flex align-items-center justify-content-center flex-column my-5">
 				<form
@@ -107,11 +127,9 @@ const WeatherApp = () => {
 						name="searchWeather"
 						id="searchWeather"
 						placeholder="Введите город"
-						value={weatherInput}
+						value={searchValue}
 						className="form-control search-input p-3 brand-small-text w-100"
-						onChange={(e) => {
-							setWeatherInput(e.target.value);
-						}}
+						onChange={changeInput}
 						autoComplete="off"
 						autoFocus={true}
 					/>
@@ -136,7 +154,6 @@ const WeatherApp = () => {
 			</section>
 		);
 	};
-
 	const SearchMenuComponent = ({ search }) => {
 		const [dataArray, changeDataArray] = useState([]);
 		useEffect(() => {
@@ -167,10 +184,12 @@ const WeatherApp = () => {
 			</section>
 		);
 	};
+
 	const testSearch = () => {
 		addUtilityComponentHeight();
 		setComponentToInsert(<SearchComponent />);
 	};
+
 	return (
 		<React.Fragment>
 			<Spinner />
@@ -178,7 +197,7 @@ const WeatherApp = () => {
 				className="container-fluid d-flex flex-column py-2 px-0 width-toggle-5 m-auto"
 				style={{ overflowX: "hidden" }}
 				id="weatherContainer">
-				<Header/>
+				<Header />
 				<section className="current-weather-container d-flex justify-content-center px-2 mb-3 mt-4">
 					<section className="current-weather-value-container d-flex">
 						<section className="">

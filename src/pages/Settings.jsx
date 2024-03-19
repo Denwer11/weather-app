@@ -15,7 +15,6 @@ const Settings = () => {
 		settings.getDefaultLocation()
 	);
 	const [weatherUnit, setWeatherUnit] = useState();
-	//database returns a string
 	let trackedLocation = db.get("TRACK_SAVED_LOCATION_WEATHER");
 	let trackedLocationLegit = trackedLocation === "true" ? true : false;
 
@@ -26,9 +25,9 @@ const Settings = () => {
 			<section className="container-fluid width-toggle-5 m-auto mt-3">
 				<Header />
 				<section className="city-locaton text-center">
-					<h5 className="fw-bold fs-5 brand-small-text">Изменить настройки</h5>
+					<h5 className="fw-bold fs-5 brand-small-text mt-5">Изменить настройки</h5>
 				</section>
-				<section className="d-flex align-items-start justify-content-center w-100">
+				<section className="d-flex align-items-start justify-content-center w-50 m-auto">
 					<section className="settings">
 						<form
 							action=""
@@ -37,7 +36,7 @@ const Settings = () => {
 							<label
 								htmlFor="defaultLocation "
 								className="brand-small-text py-3">
-								Обновите свое местоположение
+								Обновите местоположение
 							</label>
 							<input
 								type="text"
@@ -45,7 +44,7 @@ const Settings = () => {
 								id="defaultLocation"
 								className="form-control p-3 my-1"
 								value={defaultLocation}
-								placeholder={"Enter your default location to track.."}
+								placeholder={"Введите город для отслеживания..."}
 								onChange={(e) => {
 									setDefaultLocation(e.target.value);
 								}}
@@ -63,12 +62,12 @@ const Settings = () => {
 							<label
 								htmlFor="defaultWeatherUnit "
 								className="py-2 my-2 brand-small-text">
-								Выберите единицу измерения погоды
+								Выберите единицу измерения
 							</label>
 
 							<div className="mb-3">
 								<select
-									className="form-select form-select my-2"
+									className="form-select form-select my-2 py-3"
 									name="weatherUnit"
 									id="weatherUnitContainer"
 									value={weatherUnit}

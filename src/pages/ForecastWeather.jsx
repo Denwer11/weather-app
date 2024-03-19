@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Footer from "../components/footer";
 import navigate from "../inc/scripts/utilities";
 import jQuery from "jquery";
@@ -8,13 +8,14 @@ import ForecastDailyWeatherComponent from "../components/forecastWeatherComponen
 import Swal from "sweetalert2";
 import * as utilis from "./../inc/scripts/utilities";
 import Header from "../components/header";
+import { AppContext } from "../AppContext";
 
 const ForecastWeather = () => {
 	if (!db.get("HOME_PAGE_SEEN")) {
 		navigate("/");
 	}
 	const [componentToInsert, setComponentToInsert] = useState("");
-	const [forecastData, setForecastData] = useState(null);
+	const { forecastData, setForecastData } = useContext(AppContext);
 
 	useEffect(() => {
 		jQuery(($) => {
@@ -53,13 +54,13 @@ const ForecastWeather = () => {
 			$.ajax({
 				url: FORECAST_URL,
 				success: (result, status, xhr) => {
-					if (result.cod === 200) {
+					if (result.cod == 200) {
 						setForecastData(result);
 					}
 				},
 
 				error: (xhr, status, error) => {
-					if (error === "") {
+					if (error == "") {
 						Swal.fire({
 							toast: true,
 							text: "Network Error!",
@@ -79,7 +80,6 @@ const ForecastWeather = () => {
 							position: "top",
 							showConfirmButton: false,
 						}).then((willProceed) => {
-							//scroll to top when the promise is resolved!
 							currentWeather.scrollToElement("forecastPage");
 						});
 					}
@@ -114,7 +114,6 @@ const ForecastWeather = () => {
 				)
 			);
 
-			//save the first values into the database for reference @ the home screen
 			db.create(
 				`WEATHER_FORECAST_TIME_${i}`,
 				`${utilis.convertTo24Hour(
@@ -359,8 +358,7 @@ const ForecastWeather = () => {
 				<section className="my-1 next-week-component-container d-flex flex-column my-1">
 					<br />
 					<section className="d-flex align-items-center justify-content-between mb-2 flex-row-reverse">
-						<h6 className="fw-bold fs-6 my-3 text-start"> Прогноз</h6>
-						<h6 className="fw-bold fs-6 my-3 text-start">Почасовой</h6>
+						<h6 className="fw-bold fs-6 my-3 ">Почасовой Прогноз</h6>
 					</section>
 
 					<section className="day-1-container future-weather-days d-flex align-items-center justify-content-start">

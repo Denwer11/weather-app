@@ -63,7 +63,7 @@ export const checkWeatherUnitDeg = () => {
 export const handleWeatherForm = (e, search) => {
 	e.preventDefault();
 
-	if (db.get("TRACK_SAVED_LOCATION_WEATHER") === "false") {
+	if (db.get("TRACK_SAVED_LOCATION_WEATHER") == "false") {
 		Swal.fire({
 			text: "Местоположение изменено!",
 			icon: "info",
@@ -85,23 +85,16 @@ export const handleWeatherForm = (e, search) => {
 		$("#searchWeather").val("");
 	});
 };
+export const handleWeatherForm1 = (search) => {
+		let userSearch = search;
+
+		getCurrentWeather(userSearch.trim());
+};
 
 export const findCity = (searchTerm, updateDataArray) => {
-	if (db.get("TRACK_SAVED_LOCATION_WEATHER") === "false") {
-		Swal.fire({
-			text: "Изменение местоположения",
-			icon: "info",
-			timer: 1500,
-			toast: true,
-			showConfirmButton: false,
-			position: "top",
-		}).then((willProceed) => {
-			scrollToElement("weatherContainer");
-		});
-	}
-	const XAPIKEY = "lNhOELJHDMrwCwm40hFvwA==teZv2EboEGJfonOC";
+
+	const XAPIKEY = "i64h71pBcwsqMF7fHb7C4A==M4liKNe6eW43M91R";
 	jQuery(($) => {
-		console.log("Ajax sent");
 		$.ajax({
 			url: `https://api.api-ninjas.com/v1/city?name=${searchTerm}&limit=4`,
 			processData: false,
@@ -110,7 +103,7 @@ export const findCity = (searchTerm, updateDataArray) => {
 				"X-Api-Key": XAPIKEY,
 			},
 			success: (result, status, xhr) => {
-				if (xhr.status !== 200) {
+				if (xhr.status != 200) {
 					Swal.fire({
 						toast: true,
 						position: "top",
@@ -120,7 +113,6 @@ export const findCity = (searchTerm, updateDataArray) => {
 						timer: 1000,
 					});
 				} else {
-					console.log(result);
 					updateDataArray(result);
 				}
 			},
@@ -129,7 +121,7 @@ export const findCity = (searchTerm, updateDataArray) => {
 				closeUtilityComponent();
 				console.log("Error");
 
-				if (error === "") {
+				if (error == "") {
 					Swal.fire({
 						toast: true,
 						text: "Ошибка сети!",
@@ -234,7 +226,7 @@ export const getCurrentWeather = (location) => {
 			url: SEARCH_URL,
 			processData: false,
 			success: (result, status, xhr) => {
-				if (xhr.status !== 200) {
+				if (xhr.status != 200) {
 					Swal.fire({
 						toast: true,
 						position: "top",
@@ -244,7 +236,7 @@ export const getCurrentWeather = (location) => {
 						timer: 1000,
 					});
 				} else {
-					if (result.cod === 200) {
+					if (result.cod == 200) {
 						updateReactDom(result);
 					}
 				}
@@ -253,7 +245,7 @@ export const getCurrentWeather = (location) => {
 				$("#searchWeather").val(" ");
 				closeUtilityComponent();
 
-				if (error === "") {
+				if (error == "") {
 					Swal.fire({
 						toast: true,
 						text: "Ошибка сети!",
