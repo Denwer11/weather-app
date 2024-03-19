@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Footer from "../components/Footer";
+import Footer from "../components/Footer.jsx";
 import navigate from "../inc/scripts/utilities";
 import jQuery from "jquery";
 import { db } from "../backend/app_backend";
