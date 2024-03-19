@@ -53,13 +53,13 @@ const ForecastWeather = () => {
 			$.ajax({
 				url: FORECAST_URL,
 				success: (result, status, xhr) => {
-					if (result.cod == 200) {
+					if (result.cod === 200) {
 						setForecastData(result);
 					}
 				},
 
 				error: (xhr, status, error) => {
-					if (error == "") {
+					if (error === "") {
 						Swal.fire({
 							toast: true,
 							text: "Network Error!",
