@@ -86,13 +86,12 @@ export const handleWeatherForm = (e, search) => {
 	});
 };
 export const handleWeatherForm1 = (search) => {
-		let userSearch = search;
+	let userSearch = search;
 
-		getCurrentWeather(userSearch.trim());
+	getCurrentWeather(userSearch.trim());
 };
 
 export const findCity = (searchTerm, updateDataArray) => {
-
 	const XAPIKEY = "i64h71pBcwsqMF7fHb7C4A==M4liKNe6eW43M91R";
 	jQuery(($) => {
 		$.ajax({
