@@ -110,7 +110,7 @@ export const findCity = (searchTerm, updateDataArray) => {
 				"X-Api-Key": XAPIKEY,
 			},
 			success: (result, status, xhr) => {
-				if (xhr.status !== 200) {
+				if (xhr.status != 200) {
 					Swal.fire({
 						toast: true,
 						position: "top",
@@ -129,7 +129,7 @@ export const findCity = (searchTerm, updateDataArray) => {
 				closeUtilityComponent();
 				console.log("Error");
 
-				if (error === "") {
+				if (error == "") {
 					Swal.fire({
 						toast: true,
 						text: "Ошибка сети!",
@@ -234,7 +234,7 @@ export const getCurrentWeather = (location) => {
 			url: SEARCH_URL,
 			processData: false,
 			success: (result, status, xhr) => {
-				if (xhr.status !== 200) {
+				if (xhr.status != 200) {
 					Swal.fire({
 						toast: true,
 						position: "top",
@@ -253,7 +253,7 @@ export const getCurrentWeather = (location) => {
 				$("#searchWeather").val(" ");
 				closeUtilityComponent();
 
-				if (error === "") {
+				if (error == "") {
 					Swal.fire({
 						toast: true,
 						text: "Ошибка сети!",
