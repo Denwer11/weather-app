@@ -201,7 +201,7 @@ export const updateReactDom = (result) => {
 		$("#currentDate").html(getCurrentDate());
 		checkWeatherCode(result.weather[0].id);
 		$("#main-weather-icon-container").html(
-			`<img src=${weatherSvg} alt="main-weather-icon" width="64" height="64"/>`
+			`<img src=${weatherSvg} alt="main-weather-icon" width="150" height="150"/>`
 		);
 		$("#wind-value").html(`${result.wind.speed} м/с`);
 		$("#humidity-value").html(`${result.main.humidity} %`);
