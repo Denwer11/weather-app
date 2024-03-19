@@ -5,6 +5,7 @@ import { useTheme } from "../hooks/useTheme";
 import ThemeLight from "./../assets/icons/theme-light.svg";
 import ThemeDark from "./../assets/icons//theme-dark.svg";
 import { getCurrentDate } from "../inc/scripts/utilities";
+import { Link } from "react-router-dom";
 
 const Header = () => {
 	const { theme, setTheme } = useTheme();
@@ -20,10 +21,12 @@ const Header = () => {
 				</h5>
 				<p className="date-time brand-small-text">{getCurrentDate()}</p>
 			</section>
-			<div className="d-flex">
-				<img src={Logo} alt="logo" />
-				<div className="logo-title">WeatherWatch</div>
-			</div>
+			<Link to="/" className='text-decoration-none'>
+				<div className="d-flex">
+					<img src={Logo} alt="logo" />
+					<div className="logo-title">WeatherWatch</div>
+				</div>
+			</Link>
 			<div className="change-theme" onClick={changeTheme}>
 				<img
 					src={theme === "light" ? ThemeLight : ThemeDark}

@@ -7,7 +7,7 @@ const Footer = (props) => {
 	const customFooterStyle = {
 		zIndex: "10",
 	};
-	const isWeatherPage = window.location.pathname === "/weather";
+	const isWeatherPage = window.location.pathname === "/weather" || "/";
 	return (
 		<div
 			className="m-auto d-flex align-items-center justify-content-center"
