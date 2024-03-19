@@ -63,7 +63,7 @@ export const checkWeatherUnitDeg = () => {
 export const handleWeatherForm = (e, search) => {
 	e.preventDefault();
 
-	if (db.get("TRACK_SAVED_LOCATION_WEATHER") === "false") {
+	if (db.get("TRACK_SAVED_LOCATION_WEATHER") == "false") {
 		Swal.fire({
 			text: "Местоположение изменено!",
 			icon: "info",
@@ -87,7 +87,7 @@ export const handleWeatherForm = (e, search) => {
 };
 
 export const findCity = (searchTerm, updateDataArray) => {
-	if (db.get("TRACK_SAVED_LOCATION_WEATHER") === "false") {
+	if (db.get("TRACK_SAVED_LOCATION_WEATHER") == "false") {
 		Swal.fire({
 			text: "Изменение местоположения",
 			icon: "info",
