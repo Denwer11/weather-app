@@ -2,7 +2,6 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import { AppContextProvider } from "./AppContext";
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -13,7 +12,6 @@ root.render(
 		</AppContextProvider>
 	</React.StrictMode>
 );
-
 const config = {
 	scope: "/",
 	registerOptions: {

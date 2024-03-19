@@ -1,4 +1,5 @@
 import React, { createContext, useState } from "react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 const AppContext = createContext();
 
@@ -10,6 +11,7 @@ const AppContextProvider = ({ children }) => {
 		<AppContext.Provider
 			value={{ weatherInput, setWeatherInput, forecastData, setForecastData }}>
 			{children}
+			<SpeedInsights />;
 		</AppContext.Provider>
 	);
 };
