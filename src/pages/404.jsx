@@ -1,7 +1,7 @@
 import React from "react";
-import Button from "../components/Button.jsx";
+import Button from "../components/button";
 import navigate from "../inc/scripts/utilities";
-import Spinner from "../components/Spinner.jsx";
+import Spinner from "../components/spinner";
 const NotFound = ()=>{
     
     const returnHome = ()=>{

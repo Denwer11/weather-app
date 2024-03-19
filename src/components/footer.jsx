@@ -1,7 +1,7 @@
 import React from "react";
-import FooterNav from "./FooterNav";
-import UtilityComponent from "./UtilityFooterComponet";
-import FooterWeather from "./FooterWeather";
+import FooterNav from "./footerNav";
+import UtilityComponent from "./utilityFooterComponet";
+import FooterWeather from "./footerWeather";
 
 const Footer = (props) => {
 	const customFooterStyle = {
