@@ -10,7 +10,7 @@ export const getWeatherForecast = () =>{
         $.ajax({
             url:`https://api.openweathermap.org/data/2.5/forecast?q=Nigeria&appid=${$API_KEY}`,
             success: (result, status, xhr) =>{
-                if(result.cod === 200)
+                if(result.cod == 200)
                 {
                    //console.log(result);
                    return result;
