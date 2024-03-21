@@ -10,3 +10,5 @@ Graduation project
   - Framer Motion
   - Grunt
   - Sweetalert2
+
+weather-app-gsur.vercel.app
