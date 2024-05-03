@@ -234,8 +234,8 @@ const WeatherApp = () => {
 				</section>
 				<section
 					role="button"
-					className="mx-2 rounded-3 shadow mt-3 mb-5 py-2 current-weather-assets d-flex align-items-center justify-content-around text-center">
-					<section className="current-weather-wind-speed d-flex flex-column align-items-center justify-content-center">
+					className="mx-2 rounded-3 mt-3 mb-5 py-2 current-weather-assets d-flex align-items-center justify-content-around text-center ">
+					<section className="current-weather-wind-speed d-flex flex-column align-items-center justify-content-center current-weather-degree shadow">
 						<section className="wind-icon py-1">
 							<div className="indicator">
 								<img
@@ -256,7 +256,7 @@ const WeatherApp = () => {
 						</p>
 					</section>
 
-					<section className=" current-weather-humidity-degree d-flex flex-column align-items-center ">
+					<section className="current-weather-humidity-degree d-flex flex-column align-items-center current-weather-degree shadow">
 						<section className="humidity-icon py-1">
 							<div className="indicator">
 								<img
@@ -277,7 +277,7 @@ const WeatherApp = () => {
 						</p>
 					</section>
 
-					<section className="current-weather-rain-degree d-flex flex-column align-items-center">
+					<section className="current-weather-rain-degree d-flex flex-column align-items-center current-weather-degree shadow">
 						<section className="rain-icon py-1">
 							<div className="indicator">
 								<img

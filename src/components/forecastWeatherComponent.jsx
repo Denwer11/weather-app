@@ -10,7 +10,7 @@ const ForecastDailyWeatherComponent = props => {
 				<section
 					style={customStyle}
 					id="future-weather-container"
-					className="future-weather-container d-flex align-items-center justify-content-center flex-column brand-bg-white px-4  rounded-3 shadow-sm mx-2 my-3 px-5 py-3"
+					className="future-weather-container d-flex align-items-center justify-content-center flex-column brand-bg-white px-4  rounded-3 shadow-sm mx-2 my-3 px-5 py-3 border border-white border-5"
 					title={props.title}
 					onClick={props.onClick}>
 					<section className="weather-wrapper d-flex flex-column align-items-center justify-content-center">

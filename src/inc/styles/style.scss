@@ -100,8 +100,8 @@ html[data-theme="light"] {
 	align-items: center;
 	justify-content: center;
 }
-.hour-forecast{
-	color: var(--hour-forecast);;
+.hour-forecast {
+	color: var(--hour-forecast);
 }
 .brand-btn {
 	border-radius: 30px;
@@ -337,8 +337,7 @@ section.footer-nav > section {
 }
 
 .future-weather-forecast {
-	background: var(--components-background);
-	box-shadow: var(--box-shadow);
+	background: none;
 }
 
 .future-weather-container {
@@ -354,10 +353,13 @@ section.footer-nav > section {
 	color: var(--text-color);
 	box-shadow: 2px 5px 25px -3px rgba(180, 180, 180, 0.25);
 }
-
-.current-weather-assets {
+.current-weather-degree {
+	padding: 5px 100px;
+	border-radius: 5%;
 	background: var(--components-background);
-	box-shadow: var(--box-shadow);
+}
+.current-weather-assets {
+	background: none;
 	color: var(--text-color);
 }
 
