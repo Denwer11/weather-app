@@ -67,6 +67,7 @@ html[data-theme="dark"] {
 	);
 	--text-color-btn: #292929;
 	--indicator-name-color: #c4c4c4;
+	--hour-forecast: #fff;
 }
 html[data-theme="light"] {
 	--cloud: url("../../assets/images/back-light.png");
@@ -85,6 +86,7 @@ html[data-theme="light"] {
 		rgba(255, 255, 255, 0) 100%
 	);
 	--text-color-btn: #292929;
+	--hour-forecast: #292929;
 }
 #spinner {
 	background: ghostwhite;
@@ -98,7 +100,9 @@ html[data-theme="light"] {
 	align-items: center;
 	justify-content: center;
 }
-
+.hour-forecast{
+	color: var(--hour-forecast);;
+}
 .brand-btn {
 	border-radius: 30px;
 	transition: 0.9s;
@@ -406,7 +410,7 @@ section.footer-nav > section {
 	color: var(--text-color);
 }
 
-.change-theme {
+.change-theme-icon {
 	cursor: pointer;
 }
 

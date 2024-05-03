@@ -25,7 +25,9 @@ const Settings = () => {
 			<section className="container-fluid width-toggle-5 m-auto mt-3">
 				<Header />
 				<section className="city-locaton text-center">
-					<h5 className="fw-bold fs-5 brand-small-text mt-5">Изменить настройки</h5>
+					<h5 className="fw-bold fs-5 brand-small-text mt-5">
+						Изменить настройки
+					</h5>
 				</section>
 				<section className="d-flex align-items-start justify-content-center w-50 m-auto">
 					<section className="settings">
@@ -49,7 +51,7 @@ const Settings = () => {
 									setDefaultLocation(e.target.value);
 								}}
 							/>
-							<section className="my-2 d-md-flex align-items-center justify-content-md-center d-lg-block">
+							<section className="my-2 d-md-flex align-items-center justify-content-md-center d-lg-block w-50 m-auto">
 								<Button
 									text="Сохранить местоположение"
 									className="shadow brand-btn-3 my-5"
@@ -84,7 +86,7 @@ const Settings = () => {
 								</select>
 							</div>
 
-							<section className="my-2 d-md-flex align-items-center justify-content-md-center d-lg-block">
+							<section className="my-2 d-md-flex align-items-center justify-content-md-center d-lg-block w-50 m-auto">
 								<Button
 									text="Сохранить"
 									className="shadow brand-btn-3-secondary toggle-width-3 my-5 text-dark p-2"
@@ -102,7 +104,7 @@ const Settings = () => {
 									className="brand-small-text">
 									Восстановить настройки по умолчанию
 								</label>
-								<section className="d-md-flex align-items-center justify-content-center d-lg-block">
+								<section className="d-md-flex align-items-center justify-content-center d-lg-block w-50 m-auto">
 									<Button
 										text="Сбросить настройки"
 										className="shadow brand-btn-3-secondary toggle-width-3 my-5 text-dark p-2"

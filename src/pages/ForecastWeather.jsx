@@ -63,7 +63,7 @@ const ForecastWeather = () => {
 					if (error == "") {
 						Swal.fire({
 							toast: true,
-							text: "Network Error!",
+							text: "Ошибка сети!",
 							icon: "info",
 							timer: 1000,
 							position: "top",
@@ -358,12 +358,12 @@ const ForecastWeather = () => {
 				<section className="my-1 next-week-component-container d-flex flex-column my-1">
 					<br />
 					<section className="d-flex align-items-center justify-content-between mb-2 flex-row-reverse">
-						<h6 className="fw-bold fs-6 my-3 ">Почасовой Прогноз</h6>
+						<h6 className="fw-bold fs-6 my-3 hour-forecast">Почасовой Прогноз</h6>
 					</section>
 
 					<section className="day-1-container future-weather-days d-flex align-items-center justify-content-start">
 						<section className="today-section d-flex mx-2 flex-column align-items-center justify-content-center">
-							<p className="day-number brand-small-text fw-bold">День 1</p>
+							<p className="day-number brand-small-text fw-bold">Сегодня</p>
 							<div className="future-weather-notch-active"></div>
 						</section>
 					</section>
@@ -378,7 +378,7 @@ const ForecastWeather = () => {
 					<br />
 					<section className="day-2-container future-weather-days d-flex align-items-center justify-content-start">
 						<section className="today-section d-flex mx-2 flex-column align-items-center justify-content-center">
-							<p className="day-number brand-small-text fw-bold">День 2</p>
+							<p className="day-number brand-small-text fw-bold">Завтра</p>
 							<div className="future-weather-notch-active"></div>
 						</section>
 					</section>
@@ -393,7 +393,7 @@ const ForecastWeather = () => {
 					<br />
 					<section className="day-3-container future-weather-days d-flex align-items-center justify-content-start">
 						<section className="today-section d-flex mx-2 flex-column align-items-center justify-content-center">
-							<p className="day-number brand-small-text fw-bold">День 3</p>
+							<p className="day-number brand-small-text fw-bold">Послезавтра</p>
 							<div className="future-weather-notch-active"></div>
 						</section>
 					</section>
@@ -408,7 +408,11 @@ const ForecastWeather = () => {
 
 					<section className="day-4-container future-weather-days d-flex align-items-center justify-content-start">
 						<section className="today-section d-flex mx-2 flex-column align-items-center justify-content-center">
-							<p className="day-number brand-small-text fw-bold">День 4</p>
+							<p className="day-number brand-small-text fw-bold">
+								{!(forecastData == null)
+									? utilis.getDayOfWeek(forecastData.list[24].dt)
+									: "Загрузка..."}
+							</p>
 							<div className="future-weather-notch-active"></div>
 						</section>
 					</section>
@@ -422,7 +426,11 @@ const ForecastWeather = () => {
 					<br />
 					<section className="day-5-container future-weather-days d-flex align-items-center justify-content-start">
 						<section className="today-section d-flex mx-2 flex-column align-items-center justify-content-center">
-							<p className="brand-small-text fw-bold">День 5</p>
+							<p className="brand-small-text fw-bold">
+								{!(forecastData == null)
+									? utilis.getDayOfWeek(forecastData.list[32].dt)
+									: "Загрузка..."}
+							</p>
 							<div className="future-weather-notch-active"></div>
 						</section>
 					</section>

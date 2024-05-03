@@ -2,12 +2,15 @@ import React from "react";
 import FooterNav from "./footerNav";
 import UtilityComponent from "./utilityFooterComponet";
 import FooterWeather from "./footerWeather";
+import { useLocation } from "react-router-dom";
 
 const Footer = (props) => {
+	const location = useLocation();
 	const customFooterStyle = {
 		zIndex: "10",
 	};
-	const isWeatherPage = window.location.pathname === "/weather" || "/";
+	const isWeatherPage =
+		location.pathname === "/weather" || /^\/$/.test(location.pathname);
 	return (
 		<div
 			className="m-auto d-flex align-items-center justify-content-center"

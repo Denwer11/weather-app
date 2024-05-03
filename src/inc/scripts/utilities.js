@@ -11,6 +11,19 @@ const closeUtilityComponent = () => {
 		$(".utility-component").removeClass("add-utility-component-height");
 	});
 };
+export const getDayOfWeek = (date) => {
+	const days = [
+		"Воскресенье",
+		"Понедельник",
+		"Вторник",
+		"Среда",
+		"Четверг",
+		"Пятница",
+		"Суббота",
+	];
+	const dayIndex = new Date(date * 1000).getDay();
+	return days[dayIndex];
+};
 
 export const getCurrentDate = () => {
 	let day, month, date, result;
@@ -94,12 +107,10 @@ export const getCurrentDate = () => {
 
 export const convertTo24Hour = (time) => {
 	let hours = parseInt(time.substr(0, 2));
-	// let minutes = time.substr(3);
 	return hours + ":00 ";
 };
 
 export function getTimeFromDateString(datetime) {
-	// takes a format of YYYY/MM/DD HH:MM:SS and returns HH:MM:SS
 	let time = datetime.substr(11);
 	let hours = parseInt(time.substr(0, 2));
 	let formattedTime = hours + time.substr(2);

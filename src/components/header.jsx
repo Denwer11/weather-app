@@ -21,14 +21,15 @@ const Header = () => {
 				</h5>
 				<p className="date-time brand-small-text">{getCurrentDate()}</p>
 			</section>
-			<Link to="/" className='text-decoration-none'>
+			<Link to="/" className="text-decoration-none">
 				<div className="d-flex">
 					<img src={Logo} alt="logo" />
 					<div className="logo-title">WeatherWatch</div>
 				</div>
 			</Link>
-			<div className="change-theme" onClick={changeTheme}>
+			<div className="change-theme">
 				<img
+					onClick={changeTheme}
 					src={theme === "light" ? ThemeLight : ThemeDark}
 					alt="change-theme icon"
 					id="change-theme"
