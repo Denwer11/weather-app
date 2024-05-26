@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext, useCallback } from "react";
 import jQuery from "jquery";
 import Button from "./../components/button";
 import Footer from "../components/footer";
-import FutureWeatherComponent from "../components/futureWeatherComponent";
 import navigate from "../inc/scripts/utilities";
 import Spinner from "../components/spinner";
 import Ripple from "./../assets/images/ripple.gif";
@@ -14,13 +13,12 @@ import OvercastCloud from "./../assets/icons/overcast-clouds.svg";
 import WindIcon from "./../assets/icons/wind.svg";
 import HumidityIcon from "./../assets/icons/humidity.png";
 import PressureIcon from "./../assets/icons/pressure.svg";
+import FutureWeatherComponent from "../components/futureWeatherComponent";
 import Header from "../components/header";
 import { AppContext } from "../AppContext";
 import { debounce } from "lodash";
-import * as utilis from "./../inc/scripts/utilities";
 import * as currentWeather from "./../apis/getCurrentWeather";
 import Swal from "sweetalert2";
-import ForecastDailyWeatherComponent from "../components/forecastWeatherComponent";
 
 const WeatherApp = () => {
 	if (!db.get("HOME_PAGE_SEEN")) {
@@ -29,9 +27,11 @@ const WeatherApp = () => {
 
 	const [componentToInsert, setComponentToInsert] = useState("");
 	const { weatherInput, setWeatherInput } = useContext(AppContext);
-	const { forecastData, setforecastData } = useContext(AppContext);
+	const { forecastData, setForecastData } = useContext(AppContext);
+	const [currentWeatherForDay, setCurrentWeatherForDay] = useState([])
 
 	let savedLocation;
+
 	savedLocation = db.get("USER_DEFAULT_LOCATION");
 
 	const addUtilityComponentHeight = () => {
@@ -42,20 +42,94 @@ const WeatherApp = () => {
 		});
 	};
 
-	const navigateToForecast = () => {
-		navigate("/forecast");
-	};
+	const navigateToForecast = () => navigate("/forecast");
 	class MappedSavedDataTemplate {
 		constructor(id, time, icon, unit) {
 			this.id = id;
 			this.time = time;
 			this.icon = icon;
-			this.unit = unit;
+			this.unit = Math.round(unit);
 		}
 	}
+
+	useEffect(() => {
+		jQuery(($) => {
+			$.noConflict();
+			const $API_KEY = "cd34f692e856e493bd936095b256b337";
+			const $WEATHER_UNIT = db.get("WEATHER_UNIT") || "metric";
+			const $user_city = db.get("USER_DEFAULT_LOCATION");
+			const $user_latitude = db.get("USER_LATITUDE");
+			const $user_longitude = db.get("USER_LONGITUDE");
+			let FORECAST_URL;
+			if (
+				$user_city == null &&
+				$user_latitude == null &&
+				$user_longitude == null
+			) {
+				console.log(typeof $user_city);
+				Swal.fire({
+					text: "Сохраненное местоположение не найдено!",
+					icon: "error",
+					timer: 3000,
+					toast: true,
+					showConfirmButton: false,
+					position: "top",
+				}).then((willProceed) => {
+					return;
+				});
+			} else if (
+				$user_city == null &&
+				$user_latitude != null &&
+				$user_longitude != null
+			) {
+				FORECAST_URL = `https://api.openweathermap.org/data/2.5/forecast?lat=${$user_latitude}&lon=${$user_longitude}&appid=${$API_KEY}&units=${$WEATHER_UNIT}`;
+			} else {
+				FORECAST_URL = `https://api.openweathermap.org/data/2.5/forecast?q=${$user_city}&appid=${$API_KEY}&units=${$WEATHER_UNIT}`;
+			}
+			$.ajax({
+				url: FORECAST_URL,
+				success: (result, status, xhr) => {
+					if (result.cod == 200) {
+						setForecastData(result);
+					}
+				},
+
+				error: (xhr, status, error) => {
+					if (error == "") {
+						Swal.fire({
+							toast: true,
+							text: "Ошибка сети!",
+							icon: "info",
+							timer: 1000,
+							position: "top",
+							showConfirmButton: false,
+						}).then((willProceed) => {
+							currentWeather.scrollToElement("forecastPage");
+						});
+					} else {
+						Swal.fire({
+							toast: true,
+							text: error,
+							icon: "warning",
+							timer: 1000,
+							position: "top",
+							showConfirmButton: false,
+						}).then((willProceed) => {
+							currentWeather.scrollToElement("forecastPage");
+						});
+					}
+				},
+			});
+		});
+	}, []);
+
 	useEffect(() => {
 		formHandler.handleWeatherForm1(savedLocation);
 	}, [weatherInput]);
+
+	useEffect(() => {
+		mapDbSavedData()
+	}, [forecastData])
 
 	const mapDbSavedData = () => {
 		const count = 8;
@@ -66,34 +140,23 @@ const WeatherApp = () => {
 			const FORECAST_TIME =
 				db.get(`WEATHER_FORECAST_TIME_${i}`) || `${i * 3}:00`;
 			const FORECAST_ICON = db.get(`WEATHER_FORECAST_ICON_${i}`) || "802";
-			const FORECAST_UNIT = db.get(`WEATHER_FORECAST_UNIT_${i}`) || "0";
+
+			// const FORECAST_UNIT = db.get(`WEATHER_FORECAST_UNIT_${i}`) || "0";
+
+			const newUnit = forecastData && forecastData.list[i].main.temp
 
 			weatherData.push(
 				new MappedSavedDataTemplate(
 					i,
 					FORECAST_TIME,
 					formHandler.checkWeatherCode(parseInt(FORECAST_ICON)),
-					FORECAST_UNIT
+					String(newUnit)
 				)
 			);
 		}
 
-		const uiData = weatherData.map((data, index) => {
-			const handleElementClick = () => {
-				navigate("/forecast");
-			};
-			return (
-				<FutureWeatherComponent
-					key={data.id}
-					time={data.time}
-					icon={data.icon}
-					weatherUnit={data.unit}
-					onClick={handleElementClick}
-				/>
-			);
-		});
+		setCurrentWeatherForDay(weatherData)
 
-		return uiData;
 	};
 
 	const SearchComponent = () => {
@@ -155,6 +218,7 @@ const WeatherApp = () => {
 			</section>
 		);
 	};
+
 	const SearchMenuComponent = ({ search }) => {
 		const [dataArray, changeDataArray] = useState([]);
 		useEffect(() => {
@@ -323,7 +387,21 @@ const WeatherApp = () => {
 				<section
 					className="future-weather-forecast my-4 d-flex align-items-center justify-content-between rounded-3 py-2 px-2"
 					style={{ overflowX: "scroll" }}>
-					{mapDbSavedData()}
+					{/* {mapDbSavedData()} */}
+					{currentWeatherForDay.map((data) => {
+
+						const handleElementClick = () => navigate("/forecast");
+
+						return (
+							<FutureWeatherComponent
+								key={data.id}
+								time={data.time}
+								icon={data.icon}
+								weatherUnit={data.unit}
+								onClick={handleElementClick}
+							/>
+						);
+					})}
 				</section>
 				<section className="ripple-container d-flex align-items-center justify-content-center">
 					<section className="map-container d-flex align-items-center justify-content-center">
