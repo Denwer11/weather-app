@@ -361,6 +361,7 @@ section.footer-nav > section {
 .current-weather-assets {
 	background: none;
 	color: var(--text-color);
+	overflow-x: scroll;
 }
 
 .indicator-name,
@@ -431,6 +432,9 @@ section.footer-nav > section {
 	.main-weather-icon {
 		height: 70px;
 		width: 70px;
+	}
+	.setting-btn{
+		width: 100% !important;
 	}
 }
 @media (max-width: 1200px) {

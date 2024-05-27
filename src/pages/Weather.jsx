@@ -389,7 +389,6 @@ const WeatherApp = () => {
 					style={{ overflowX: "scroll" }}>
 					{/* {mapDbSavedData()} */}
 					{currentWeatherForDay.map((data) => {
-
 						const handleElementClick = () => navigate("/forecast");
 
 						return (

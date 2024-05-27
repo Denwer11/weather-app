@@ -29,7 +29,7 @@ const Settings = () => {
 						Изменить настройки
 					</h5>
 				</section>
-				<section className="d-flex align-items-start justify-content-center w-50 m-auto">
+				<section className="d-flex align-items-start justify-content-center w-50 m-auto setting-btn">
 					<section className="settings">
 						<form
 							action=""
