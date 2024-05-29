@@ -417,11 +417,17 @@ section.footer-nav > section {
 	cursor: pointer;
 }
 
-@media (max-width: 563px) {
+@media (max-width: 604px) {
 	.app-header {
 		align-items: center;
 		flex-wrap: nowrap;
 		justify-content: center !important;
+	}
+}
+@media (max-width: 1070px) {
+	.current-weather-degree {
+		margin-left: 10px;
+		margin-right: 10px;
 	}
 }
 
@@ -433,8 +439,11 @@ section.footer-nav > section {
 		height: 70px;
 		width: 70px;
 	}
-	.setting-btn{
+	.setting-btn {
 		width: 100% !important;
+	}
+	.degree-main {
+		justify-content: center;
 	}
 }
 @media (max-width: 1200px) {

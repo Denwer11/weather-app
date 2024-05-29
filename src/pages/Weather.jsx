@@ -266,7 +266,7 @@ const WeatherApp = () => {
 				<section className="current-weather-container d-flex justify-content-center px-2 mb-3 mt-4">
 					<section className="current-weather-value-container d-flex">
 						<section className="">
-							<div className="d-flex">
+							<div className="d-flex degree-main">
 								<h1
 									className="current-weather-value fw-bold brand-large-text"
 									id="currentDeg">
