@@ -203,8 +203,15 @@ const WeatherApp = () => {
 			setSearchValue(e.target.value);
 			updateSearchValue(e.target.value);
 		};
+
+		const onCloseHandle = () => {
+			formHandler.closeUtilityComponent();
+		};
 		return (
 			<section className="cmp d-flex align-items-center justify-content-center flex-column my-5">
+				<span className="close" onClick={onCloseHandle}>
+					X
+				</span>
 				<form
 					id="searchWeatherForm"
 					onSubmit={(e) => {
@@ -231,7 +238,7 @@ const WeatherApp = () => {
 					<p
 						className="error-holder text-danger py-3 fs-6 brand-small-text text-center d-none"
 						id="searchErrorLog">
-						город не найден
+						Город не найден
 					</p>
 
 					<section className="d-none "></section>
