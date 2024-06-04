@@ -492,9 +492,10 @@ section.footer-nav > section {
 .modal-content {
 	background-color: var(--modal-background);
 	padding: 20px;
-	border-radius: 5px;
+	border-radius: 10px;
 	width: 700px;
 	color: var(--text-color);
+	border: 5px solid white;;
 }
 
 .close {
@@ -581,6 +582,7 @@ section.footer-nav > section {
 	padding: 20px;
 	border-radius: 5px;
 	width: 400px;
+	border: 5px solid white;
 }
 
 .modal-weather.show {
@@ -650,6 +652,7 @@ section.footer-nav > section {
 	border-radius: 20px;
 	cursor: pointer;
 	transition: all 0.3s ease-in-out;
+	color: var(--modal-btn);
 
 	&:hover {
 		transform: scale(1.05);
@@ -702,4 +705,16 @@ section.footer-nav > section {
 .weather-box {
 	background-color: var(--modal-weather-background);
 	color: #292929;
+}
+
+.btn-weather {
+	color: var(--text-color);
+	background-color: var(--body-background);
+}
+
+
+@media (max-width: 410px) {
+.modal-weather-content{
+	width: 350px;
+}
 }

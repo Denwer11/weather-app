@@ -480,7 +480,7 @@ const WeatherApp = () => {
 				<section className="d-flex align-items-center justify-content-center">
 					<Button
 						text="Текущее местоположение"
-						className="brand-btn my-5 width-toggle"
+						className="brand-btn my-5 width-toggle btn-weather"
 						onClick={getGeolocation}
 					/>
 					<br />
