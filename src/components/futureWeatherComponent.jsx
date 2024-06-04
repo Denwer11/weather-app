@@ -25,7 +25,6 @@ const FutureWeatherComponent = props =>{
 							/>
 						</section>
 						<p className="brand-small-text fw-bold text-center m-0">
-							{" "}
 							{props.weatherUnit}
 							<sup>o</sup>
 						</p>

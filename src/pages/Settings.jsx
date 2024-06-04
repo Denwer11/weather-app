@@ -1,15 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Footer from "../components/footer";
-import navigate from "../inc/scripts/utilities";
 import Button from "../components/button";
 import Spinner from "../components/spinner";
 import { db } from "../backend/app_backend";
 import * as settings from "./../backend/settings";
-import Header from '../components/header';
+import Header from "../components/header";
+
 const Settings = () => {
-	const navigateHome = () => {
-		navigate("./weather");
-	};
 
 	const [defaultLocation, setDefaultLocation] = useState(
 		settings.getDefaultLocation()

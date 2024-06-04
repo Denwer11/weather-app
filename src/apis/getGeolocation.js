@@ -34,7 +34,7 @@ const getGeolocation = () => {
 
 						const longitude = position.coords.longitude || db.get("USER_LONGITUDE"),
 							  latitude = position.coords.latitude || db.get("USER_LATITUDE");
-						const URL = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${weatherAPI.API_KEY}&units=${weatherAPI.WEATHER_UNIT}`;
+						const URL = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${weatherAPI.API_KEY}&units=${weatherAPI.WEATHER_UNIT}&lang=ru`;
 
 						$.ajax({
 							url: URL,
@@ -44,7 +44,7 @@ const getGeolocation = () => {
 									Swal.fire({
 										toast: true,
 										position: "top",
-										text: "Something went wrong!",
+										text: "Что-то пошло не так!",
 										icon: "info",
 										showConfirmButton: false,
 										timer: 3000,

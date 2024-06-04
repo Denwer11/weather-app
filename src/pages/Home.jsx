@@ -58,7 +58,7 @@ const Home = () => {
 						console.log("aaaa");
 
 						let savedLocation;
-						savedLocation = db.get("USER_DEFAULT_LOCATION");
+						savedLocation = db.get("WEATHER_LOCATION");
 						formHandler.handleWeatherForm1(savedLocation);
 						setWeatherInput(savedLocation);
 

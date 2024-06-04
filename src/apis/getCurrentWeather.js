@@ -63,19 +63,6 @@ export const checkWeatherUnitDeg = () => {
 export const handleWeatherForm = (e, search) => {
 	e.preventDefault();
 
-	if (db.get("TRACK_SAVED_LOCATION_WEATHER") == "false") {
-		Swal.fire({
-			text: "Местоположение изменено!",
-			icon: "info",
-			timer: 1500,
-			toast: true,
-			showConfirmButton: false,
-			position: "top",
-		}).then((willProceed) => {
-			scrollToElement("weatherContainer");
-		});
-	}
-
 	let userSearch = jQuery("#searchWeather").val() || search;
 
 	getCurrentWeather(userSearch.trim());
@@ -90,6 +77,7 @@ export const handleWeatherForm1 = (search) => {
 
 	getCurrentWeather(userSearch.trim());
 };
+
 
 export const findCity = (searchTerm, updateDataArray) => {
 	const XAPIKEY = "i64h71pBcwsqMF7fHb7C4A==M4liKNe6eW43M91R";
@@ -118,7 +106,6 @@ export const findCity = (searchTerm, updateDataArray) => {
 			error: (xhr, status, error) => {
 				$("#searchWeather").val(" ");
 				closeUtilityComponent();
-				console.log("Error");
 
 				if (error == "") {
 					Swal.fire({
@@ -134,7 +121,7 @@ export const findCity = (searchTerm, updateDataArray) => {
 				} else {
 					Swal.fire({
 						toast: true,
-						text: error,
+						text: "Не найдено!",
 						icon: "warning",
 						timer: 1000,
 						position: "top",
@@ -205,14 +192,15 @@ export const updateReactDom = (result) => {
 		);
 		$("#wind-value").html(`${result.wind.speed} м/с`);
 		$("#humidity-value").html(`${result.main.humidity} %`);
-		$("#pressure-value").html(`${result.main.pressure} hPa`);
+		let pressure = result.main.pressure * 0.75;
+		$("#pressure-value").html(`${pressure} мм рт. ст.`);
 		db.create("WEATHER_LOCATION", `${result.name} ${result.sys.country}`);
 		db.create("WEATHER_DEG", result.main.temp);
 		db.create("WEATHER_DESCRIPTION", result.weather[0].description);
 		db.create("WEATHER_CODE", result.weather[0].id);
-		db.create("SUB_WEATHER_WIND_VALUE", `${result.wind.speed} м/с`);
-		db.create("SUB_WEATHER_HUMIDITY_VALUE", `${result.main.humidity} %`);
-		db.create("SUB_WEATHER_PRESSURE_VALUE", `${result.main.pressure} hPa`);
+		db.create("SUB_WEATHER_WIND_VALUE", `${result.wind.speed}`);
+		db.create("SUB_WEATHER_HUMIDITY_VALUE", `${result.main.humidity}`);
+		db.create("SUB_WEATHER_PRESSURE_VALUE", `${pressure}`);
 	});
 };
 export const getCurrentWeather = (location) => {
@@ -232,7 +220,7 @@ export const getCurrentWeather = (location) => {
 						text: "Что-то пошло не так!",
 						icon: "info",
 						showConfirmButton: false,
-						timer: 1000,
+						timer: 2000,
 					});
 				} else {
 					if (result.cod == 200) {
@@ -249,7 +237,7 @@ export const getCurrentWeather = (location) => {
 						toast: true,
 						text: "Ошибка сети!",
 						icon: "info",
-						timer: 1000,
+						timer: 2000,
 						position: "top",
 						showConfirmButton: false,
 					}).then((willProceed) => {
@@ -258,9 +246,9 @@ export const getCurrentWeather = (location) => {
 				} else {
 					Swal.fire({
 						toast: true,
-						text: error,
+						text: "Не найдено!",
 						icon: "warning",
-						timer: 1000,
+						timer: 2000,
 						position: "top",
 						showConfirmButton: false,
 					}).then((willProceed) => {

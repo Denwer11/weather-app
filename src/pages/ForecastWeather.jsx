@@ -9,13 +9,21 @@ import Swal from "sweetalert2";
 import * as utilis from "./../inc/scripts/utilities";
 import Header from "../components/header";
 import { AppContext } from "../AppContext";
+import Modal from "../components/modal";
 
 const ForecastWeather = () => {
 	if (!db.get("HOME_PAGE_SEEN")) {
 		navigate("/");
 	}
+	const [showModal, setShowModal] = useState(false);
+	const [selectedData, setSelectedData] = useState(null);
+	const [isAnimated, setIsAnimated] = useState(false);
 	const [componentToInsert, setComponentToInsert] = useState("");
 	const { forecastData, setForecastData } = useContext(AppContext);
+
+	const handleCloseModal = () => {
+		setShowModal(false);
+	};
 
 	useEffect(() => {
 		jQuery(($) => {
@@ -47,9 +55,9 @@ const ForecastWeather = () => {
 				$user_latitude != null &&
 				$user_longitude != null
 			) {
-				FORECAST_URL = `https://api.openweathermap.org/data/2.5/forecast?lat=${$user_latitude}&lon=${$user_longitude}&appid=${$API_KEY}&units=${$WEATHER_UNIT}`;
+				FORECAST_URL = `https://api.openweathermap.org/data/2.5/forecast?lat=${$user_latitude}&lon=${$user_longitude}&appid=${$API_KEY}&units=${$WEATHER_UNIT}&lang=ru`;
 			} else {
-				FORECAST_URL = `https://api.openweathermap.org/data/2.5/forecast?q=${$user_city}&appid=${$API_KEY}&units=${$WEATHER_UNIT}`;
+				FORECAST_URL = `https://api.openweathermap.org/data/2.5/forecast?q=${$user_city}&appid=${$API_KEY}&units=${$WEATHER_UNIT}&lang=ru`;
 			}
 			$.ajax({
 				url: FORECAST_URL,
@@ -89,14 +97,25 @@ const ForecastWeather = () => {
 	}, []);
 
 	class WeatherTemplate {
-		constructor(id, time, icon, unit, title) {
+		constructor(id, time, icon, unit, description, humidity, pressure, wind) {
 			this.id = id;
 			this.time = time;
 			this.icon = icon;
 			this.unit = unit;
-			this.title = title;
+			this.description = description;
+			this.humidity = humidity;
+			this.pressure = pressure;
+			this.wind = wind;
 		}
 	}
+
+	const handleHourClick = (data) => {
+		setShowModal(true);
+		setSelectedData(data);
+		setTimeout(() => {
+			setIsAnimated(true);
+		}, 100);
+	};
 
 	const mapFirstDayData = (result) => {
 		let outputArray = [];
@@ -110,7 +129,10 @@ const ForecastWeather = () => {
 					),
 					currentWeather.checkWeatherCode(result.list[i].weather[0].id),
 					Math.ceil(result.list[i].main.temp),
-					result.list[i].weather[0].description
+					result.list[i].weather[0].description,
+					result.list[i].main.humidity,
+					result.list[i].main.pressure * 0.75,
+					result.list[i].wind.speed
 				)
 			);
 
@@ -129,31 +151,28 @@ const ForecastWeather = () => {
 				`${Math.ceil(result.list[i].main.temp)}`
 			);
 			db.create(
-				`WEATHER_FORECAST_TITLE_${i}`,
+				`WEATHER_FORECAST_HUMIDITY_${i}`,
+				`${result.list[i].main.humidity}`
+			);
+			db.create(
+				`WEATHER_FORECAST_PRESSURE_${i}`,
+				`${result.list[i].main.pressure * 0.75}`
+			);
+			db.create(`WEATHER_FORECAST_WIND_${i}`, `${result.list[i].wind.speed}`);
+			db.create(
+				`WEATHER_FORECAST_DESCRIPTION_${i}`,
 				`${result.list[i].weather[0].description}`
 			);
 		}
 
 		const firstWeatherDataForecast = outputArray.map((data, index) => {
-			const giveMoreDetails = () => {
-				Swal.fire({
-					text: data.title,
-					toast: true,
-					position: "top",
-					timer: 3000,
-					showConfirmButton: false,
-					icon: "info",
-				}).then((willProceed) => {
-					return;
-				});
-			};
 			return (
 				<ForecastDailyWeatherComponent
 					key={data.id}
 					time={data.time}
 					icon={data.icon}
 					weatherUnit={data.unit}
-					onClick={giveMoreDetails}
+					onClick={() => handleHourClick(data)}
 				/>
 			);
 		});
@@ -173,31 +192,22 @@ const ForecastWeather = () => {
 					),
 					currentWeather.checkWeatherCode(result.list[i].weather[0].id),
 					Math.ceil(result.list[i].main.temp),
-					result.list[i].weather[0].description
+					result.list[i].weather[0].description,
+					result.list[i].main.humidity,
+					result.list[i].main.pressure * 0.75,
+					result.list[i].wind.speed
 				)
 			);
 		}
 
 		const secondWeatherDataForecast = outputArray.map((data, index) => {
-			const giveMoreDetails = () => {
-				Swal.fire({
-					text: data.title,
-					toast: true,
-					position: "top",
-					timer: 3000,
-					showConfirmButton: false,
-					icon: "info",
-				}).then((willProceed) => {
-					return;
-				});
-			};
 			return (
 				<ForecastDailyWeatherComponent
 					key={data.id}
 					time={data.time}
 					icon={data.icon}
 					weatherUnit={data.unit}
-					onClick={giveMoreDetails}
+					onClick={() => handleHourClick(data)}
 				/>
 			);
 		});
@@ -217,31 +227,22 @@ const ForecastWeather = () => {
 					),
 					currentWeather.checkWeatherCode(result.list[i].weather[0].id),
 					Math.ceil(result.list[i].main.temp),
-					result.list[i].weather[0].description
+					result.list[i].weather[0].description,
+					result.list[i].main.humidity,
+					result.list[i].main.pressure * 0.75,
+					result.list[i].wind.speed
 				)
 			);
 		}
 
 		const thirdWeatherDataForecast = outputArray.map((data, index) => {
-			const giveMoreDetails = () => {
-				Swal.fire({
-					text: data.title,
-					toast: true,
-					position: "top",
-					timer: 3000,
-					showConfirmButton: false,
-					icon: "info",
-				}).then((willProceed) => {
-					return;
-				});
-			};
 			return (
 				<ForecastDailyWeatherComponent
 					key={data.id}
 					time={data.time}
 					icon={data.icon}
 					weatherUnit={data.unit}
-					onClick={giveMoreDetails}
+					onClick={() => handleHourClick(data)}
 				/>
 			);
 		});
@@ -261,31 +262,22 @@ const ForecastWeather = () => {
 					),
 					currentWeather.checkWeatherCode(result.list[i].weather[0].id),
 					Math.ceil(result.list[i].main.temp),
-					result.list[i].weather[0].description
+					result.list[i].weather[0].description,
+					result.list[i].main.humidity,
+					result.list[i].main.pressure * 0.75,
+					result.list[i].wind.speed
 				)
 			);
 		}
 
 		const forthWeatherDataForecast = outputArray.map((data, index) => {
-			const giveMoreDetails = () => {
-				Swal.fire({
-					text: data.title,
-					toast: true,
-					position: "top",
-					timer: 3000,
-					showConfirmButton: false,
-					icon: "info",
-				}).then((willProceed) => {
-					return;
-				});
-			};
 			return (
 				<ForecastDailyWeatherComponent
 					key={data.id}
 					time={data.time}
 					icon={data.icon}
 					weatherUnit={data.unit}
-					onClick={giveMoreDetails}
+					onClick={() => handleHourClick(data)}
 				/>
 			);
 		});
@@ -305,31 +297,22 @@ const ForecastWeather = () => {
 					),
 					currentWeather.checkWeatherCode(result.list[i].weather[0].id),
 					Math.ceil(result.list[i].main.temp),
-					result.list[i].weather[0].description
+					result.list[i].weather[0].description,
+					result.list[i].main.humidity,
+					result.list[i].main.pressure * 0.75,
+					result.list[i].wind.speed
 				)
 			);
 		}
 
 		const fifthWeatherDataForecast = outputArray.map((data, index) => {
-			const giveMoreDetails = () => {
-				Swal.fire({
-					text: data.title,
-					toast: true,
-					position: "top",
-					timer: 3000,
-					showConfirmButton: false,
-					icon: "info",
-				}).then((willProceed) => {
-					return;
-				});
-			};
 			return (
 				<ForecastDailyWeatherComponent
 					key={data.id}
 					time={data.time}
 					icon={data.icon}
 					weatherUnit={data.unit}
-					onClick={giveMoreDetails}
+					onClick={() => handleHourClick(data)}
 				/>
 			);
 		});
@@ -339,6 +322,7 @@ const ForecastWeather = () => {
 	const navigateHome = () => {
 		navigate("/weather");
 	};
+
 	return (
 		<React.Fragment>
 			<section
@@ -358,7 +342,9 @@ const ForecastWeather = () => {
 				<section className="my-1 next-week-component-container d-flex flex-column my-1">
 					<br />
 					<section className="d-flex align-items-center justify-content-between mb-2 flex-row-reverse">
-						<h6 className="fw-bold fs-6 my-3 hour-forecast">Почасовой Прогноз</h6>
+						<h6 className="fw-bold fs-6 my-3 hour-forecast">
+							Почасовой Прогноз
+						</h6>
 					</section>
 
 					<section className="day-1-container future-weather-days d-flex align-items-center justify-content-start">
@@ -373,6 +359,20 @@ const ForecastWeather = () => {
 						{!(forecastData == null)
 							? mapFirstDayData(forecastData)
 							: "Загрузка..."}
+						{selectedData && (
+							<Modal
+								time={selectedData.time}
+								icon={selectedData.icon}
+								unit={selectedData.unit}
+								pressure={selectedData.pressure}
+								wind={selectedData.wind}
+								humidity={selectedData.humidity}
+								description={selectedData.description}
+								onClose={handleCloseModal}
+								isOpen={showModal}
+								animate={isAnimated}
+							/>
+						)}
 					</section>
 
 					<br />

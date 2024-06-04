@@ -2,11 +2,13 @@ import React from "react";
 import Button from "../components/button";
 import navigate from "../inc/scripts/utilities";
 import Spinner from "../components/spinner";
+
 const NotFound = ()=>{
     
     const returnHome = ()=>{
         navigate("/weather");
     }
+
     return (
 			<React.Fragment>
 				<Spinner />
@@ -18,7 +20,7 @@ const NotFound = ()=>{
 					</h2>
 
 					<p className="text-muted text-capitalize text-center">
-						Запрошенная страница не найдена!
+						Страница не найдена!
 					</p>
 
 					<section className="d-flex align-items-center justify-content-center">

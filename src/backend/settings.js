@@ -111,7 +111,7 @@ export const changeWeatherUnit = (e) => {
 			case "2":
 				unitToStore = "imperial";
 				break;
-			
+
 			default:
 				Swal.fire({
 					toast: true,
@@ -123,18 +123,18 @@ export const changeWeatherUnit = (e) => {
 				});
 				break;
 		}
-		if(db.get("WEATHER_UNIT")){
-			db.update("WEATHER_UNIT",unitToStore);
+		if (db.get("WEATHER_UNIT")) {
+			db.update("WEATHER_UNIT", unitToStore);
 			Swal.fire({
-				toast:true,
-				text:"Погода обновлена успешно!",
-				icon:"success",
-				timer:1500,
-				position:"top",
-				showConfirmButton:false
-			})
-		}else{
-			db.create("WEATHER_UNIT",unitToStore);
+				toast: true,
+				text: "Погода обновлена успешно!",
+				icon: "success",
+				timer: 1500,
+				position: "top",
+				showConfirmButton: false,
+			});
+		} else {
+			db.create("WEATHER_UNIT", unitToStore);
 			Swal.fire({
 				toast: true,
 				text: "Погода обновлена успешно!",
