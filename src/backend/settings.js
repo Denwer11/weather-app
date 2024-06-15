@@ -1,7 +1,6 @@
 import { db } from "../backend/app_backend";
 import jQuery from "jquery";
 import Swal from "sweetalert2";
-import navigate from "../inc/scripts/utilities";
 
 export const saveLocation = (e) => {
 	e.preventDefault();
@@ -11,7 +10,7 @@ export const saveLocation = (e) => {
 
 		const $defaultLocation = $("#defaultLocation").val().trim();
 
-		if ($defaultLocation === undefined || $defaultLocation == "") {
+		if ($defaultLocation == undefined || $defaultLocation == "") {
 			Swal.fire({
 				title: "Неправильное местоположение!",
 				html: "<p class=' text-center text-danger'>Пожалуйста введите другое местоположение</p>",
@@ -41,7 +40,6 @@ export const getDefaultLocation = () => {
 
 export const restoreFactorySettings = () => {
 	db.destroy();
-	navigate("/");
 };
 
 export const trackSavedLocationWeather = () => {
@@ -89,7 +87,7 @@ export const trackSavedLocationWeather = () => {
 
 export const checkTrackedLocation = () => {
 	let value = db.get("TRACK_SAVED_LOCATION_WEATHER");
-	if (value === true) {
+	if (value == true) {
 		return true;
 	} else {
 		return false;
@@ -127,7 +125,7 @@ export const changeWeatherUnit = (e) => {
 			db.update("WEATHER_UNIT", unitToStore);
 			Swal.fire({
 				toast: true,
-				text: "Погода обновлена успешно!",
+				text: "Единица измерения погоды обновлена успешно!",
 				icon: "success",
 				timer: 1500,
 				position: "top",
@@ -137,7 +135,7 @@ export const changeWeatherUnit = (e) => {
 			db.create("WEATHER_UNIT", unitToStore);
 			Swal.fire({
 				toast: true,
-				text: "Погода обновлена успешно!",
+				text: "Единица измерения погоды обновлена успешно!",
 				icon: "info",
 				timer: 1500,
 				position: "top",

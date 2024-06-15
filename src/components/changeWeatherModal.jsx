@@ -65,7 +65,6 @@ const ChangeWeatherModal = ({ isOpen, onClose }) => {
 			});
 		});
 	};
-
 	return (
 		<div className={`modal-weather ${isOpen ? "show" : "hide"}`}>
 			<div className="modal-weather-content">
@@ -82,6 +81,7 @@ const ChangeWeatherModal = ({ isOpen, onClose }) => {
 					type="number"
 					className="temperature-input"
 					value={weather}
+					autoFocus={true}
 					onChange={(e) => setWeather(e.target.value)}></input>
 
 				<div className="mt-3 mb-2 fw-bold">В небе над вами:</div>
@@ -90,7 +90,7 @@ const ChangeWeatherModal = ({ isOpen, onClose }) => {
 						{icons.map((value, index) => (
 							<li
 								className={`bg-white p-2 rounded-3 d-flex flex-column align-items-center col-md-5 m-1 justify-content-center weather-check ${
-									weatherDescription === iconsValue[index] ? "active" : ""
+									weatherDescription == iconsValue[index] ? "active" : ""
 								}`}
 								key={iconsValue[index]}
 								onClick={() => setWeatherDescription(iconsValue[index])}>
@@ -117,7 +117,7 @@ const ChangeWeatherModal = ({ isOpen, onClose }) => {
 								type="radio"
 								value={item}
 								id={item}
-								checked={windSpeed === item}
+								checked={windSpeed == item}
 								onChange={handleRadioChange}
 							/>
 							<label htmlFor={item}>
@@ -126,7 +126,9 @@ const ChangeWeatherModal = ({ isOpen, onClose }) => {
 							</label>
 						</div>
 					))}
-					<button className="modal-weather-btn mt-5" onClick={sendData}>Отправить</button>
+					<button className="modal-weather-btn mt-5" onClick={sendData}>
+						Отправить
+					</button>
 				</div>
 			</div>
 		</div>

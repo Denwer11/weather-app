@@ -2,6 +2,7 @@ import jQuery from "jquery";
 import { db } from "../backend/app_backend";
 import Swal from "sweetalert2";
 import * as weatherAPI from "./getCurrentWeather";
+
 const getGeolocation = () => {
 	if (navigator.geolocation) {
 		const OPTIONS = {
@@ -34,7 +35,7 @@ const getGeolocation = () => {
 
 						const longitude = position.coords.longitude || db.get("USER_LONGITUDE"),
 							  latitude = position.coords.latitude || db.get("USER_LATITUDE");
-						const URL = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${weatherAPI.API_KEY}&units=${weatherAPI.WEATHER_UNIT}&lang=ru`;
+						const URL = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${weatherAPI.API_KEY}&units=${weatherAPI.WEATHER_UNIT}`;
 
 						$.ajax({
 							url: URL,

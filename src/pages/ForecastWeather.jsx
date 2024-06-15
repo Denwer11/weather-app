@@ -39,9 +39,8 @@ const ForecastWeather = () => {
 				$user_latitude == null &&
 				$user_longitude == null
 			) {
-				console.log(typeof $user_city);
 				Swal.fire({
-					text: "Сохраненное местоположение не найдено!",
+					text: "Местоположение не найдено!",
 					icon: "error",
 					timer: 3000,
 					toast: true,
@@ -359,6 +358,7 @@ const ForecastWeather = () => {
 						{!(forecastData == null)
 							? mapFirstDayData(forecastData)
 							: "Загрузка..."}
+						{console.log(forecastData)}
 						{selectedData && (
 							<Modal
 								time={selectedData.time}

@@ -11,8 +11,9 @@ const Header = () => {
 	const { theme, setTheme } = useTheme();
 
 	const changeTheme = () => {
-		setTheme(theme === "light" ? "dark" : "light");
+		setTheme(theme == "light" ? "dark" : "light");
 	};
+
 	return (
 		<section className="app-header d-flex justify-content-between px-2 flex-row-reverse flex-wrap">
 			<section className="city-location">
@@ -30,7 +31,7 @@ const Header = () => {
 			<div className="change-theme">
 				<img
 					onClick={changeTheme}
-					src={theme === "light" ? ThemeLight : ThemeDark}
+					src={theme == "light" ? ThemeLight : ThemeDark}
 					alt="change-theme icon"
 					id="change-theme"
 					className="change-theme-icon"

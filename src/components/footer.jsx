@@ -10,7 +10,7 @@ const Footer = (props) => {
 		zIndex: "10",
 	};
 	const isWeatherPage =
-		location.pathname === "/weather" || /^\/$/.test(location.pathname);
+		location.pathname == "/weather" || /^\/$/.test(location.pathname);
 	return (
 		<div
 			className="m-auto d-flex align-items-center justify-content-center"

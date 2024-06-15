@@ -8,13 +8,13 @@ import Swal from "sweetalert2";
 import jQuery from "jquery";
 import * as formHandler from "./../apis/getCurrentWeather";
 import { AppContext } from "../AppContext";
-import * as utilis from "./../inc/scripts/utilities";
+
+
 const Home = () => {
 	const customBtnStyle = {
 		fontSize: "18px",
 	};
 	const { weatherInput, setWeatherInput } = useContext(AppContext);
-	const { forecastData, setforecastData } = useContext(AppContext);
 
 	function click() {
 		Swal.fire({
@@ -31,7 +31,7 @@ const Home = () => {
 					$.noConflict();
 					const $defaultLocation = $("#defaultLocation").val().trim();
 
-					if ($defaultLocation === undefined || $defaultLocation === "") {
+					if ($defaultLocation == undefined || $defaultLocation == "") {
 						Swal.fire({
 							title: "Неправильное местоположение!",
 							html: "<p class=' text-center text-danger'>Пожалуйста, введите действительное местоположение</p>",
@@ -55,10 +55,8 @@ const Home = () => {
 						db.create("USER_DEFAULT_LOCATION", $defaultLocation);
 						db.create("TRACK_SAVED_LOCATION_WEATHER", false);
 						db.create("WEATHER_UNIT", "metric");
-						console.log("aaaa");
 
-						let savedLocation;
-						savedLocation = db.get("WEATHER_LOCATION");
+						let savedLocation = db.get("USER_DEFAULT_LOCATION");
 						formHandler.handleWeatherForm1(savedLocation);
 						setWeatherInput(savedLocation);
 

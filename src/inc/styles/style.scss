@@ -372,7 +372,7 @@ section.footer-nav > section {
 .current-weather-assets {
 	background: none;
 	color: var(--text-color);
-	overflow-x: scroll;
+	overflow-x: auto;
 }
 
 .indicator-name,
@@ -495,7 +495,7 @@ section.footer-nav > section {
 	border-radius: 10px;
 	width: 700px;
 	color: var(--text-color);
-	border: 5px solid white;;
+	border: 5px solid white;
 }
 
 .close {
@@ -582,7 +582,8 @@ section.footer-nav > section {
 	padding: 20px;
 	border-radius: 5px;
 	width: 400px;
-	border: 5px solid white;
+	border: 5px solid rgb(192, 189, 189);
+	overflow-y: auto;
 }
 
 .modal-weather.show {
@@ -590,6 +591,11 @@ section.footer-nav > section {
 	opacity: 1;
 	transform: translate(-50%, -50%) scale(1);
 	transition: transform 300ms cubic-bezier(0.18, 0.89, 0.43, 1.19);
+	@at-root (without: media) {
+		#weatherContainer {
+			overflow-y: hidden !important;
+		}
+	}
 }
 
 .modal-weather.hide {
@@ -696,6 +702,12 @@ section.footer-nav > section {
 		transform: scale(1.05);
 		background-color: var(--card-background) !important;
 	}
+	&:nth-of-type(3) {
+		order: 2;
+	}
+	&:nth-of-type(2) {
+		order: 3;
+	}
 }
 .weather-check.active {
 	background-color: var(--card-background) !important;
@@ -712,15 +724,17 @@ section.footer-nav > section {
 	background-color: var(--body-background);
 }
 
-
 @media (max-width: 410px) {
-.modal-weather-content{
-	width: 350px;
-}
+	.modal-weather-content {
+		width: 350px;
+	}
+	.side-panel.open {
+		width: 350px;
+	}
 }
 
-.cmp{
-	.close{
+.cmp {
+	.close {
 		top: 20px;
 		right: 20px;
 	}

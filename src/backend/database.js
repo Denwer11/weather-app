@@ -8,14 +8,14 @@ class Database {
     this.dbName = "weather-app";
 
     this.create = (key, value) => {
-      if (key === undefined || value === undefined) {
+      if (key == undefined || value == undefined) {
         throw new Error("Database key and value must be declared");
       }
       localStorage.setItem(key, value);
     };
 
     this.delete = (key) => {
-      if (key === undefined) {
+      if (key == undefined) {
         throw new Error("Database key and value must be declared");
       }
       localStorage.removeItem(key);

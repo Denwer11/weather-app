@@ -15,6 +15,7 @@ import FewClouds from "./../assets/icons/few-clouds.svg";
 import Haze from "./../assets/icons/haze.svg";
 import Tornado from "./../assets/icons/tornado.svg";
 import Sand from "./../assets/icons/sand.svg";
+import * as utilis from "./../inc/scripts/utilities";
 
 export const closeUtilityComponent = () => {
 	jQuery(($) => {
@@ -28,9 +29,9 @@ export const API_KEY = "5cf7a035145486fde24a77fcb2482192";
 export const WEATHER_UNIT = db.get("WEATHER_UNIT") || "metric";
 
 export const scrollToElement = (elementId) => {
-	document
-		.getElementById(`${elementId}`)
-		.scrollIntoView({ behaviour: "smooth" });
+	// document
+	// 	.getElementById(`${elementId ?? ''}`)
+	// 	.scrollIntoView({ behaviour: "smooth" });
 };
 
 export const checkWeatherUnitDeg = () => {
@@ -60,79 +61,81 @@ export const checkWeatherUnitDeg = () => {
 	return result;
 };
 
-export const handleWeatherForm = (e, search) => {
-	e.preventDefault();
-
+export const handleWeatherForm = (search) => {
 	let userSearch = jQuery("#searchWeather").val() || search;
 
 	getCurrentWeather(userSearch.trim());
+	getForecastWeather(userSearch.trim());
 
 	scrollToElement("weatherContainer");
+
 	jQuery(($) => {
 		$("#searchWeather").val("");
 	});
 };
-export const handleWeatherForm1 = (search) => {
-	let userSearch = search;
 
-	getCurrentWeather(userSearch.trim());
+export const handleWeatherForm1 = (search) => {
+	getCurrentWeather(search.trim());
+	getForecastWeather(search.trim());
 };
 
+export const findCity = async (searchTerm) => {
+	let isMustBeUpdated = false;
 
-export const findCity = (searchTerm, updateDataArray) => {
-	const XAPIKEY = "i64h71pBcwsqMF7fHb7C4A==M4liKNe6eW43M91R";
-	jQuery(($) => {
-		$.ajax({
-			url: `https://api.api-ninjas.com/v1/city?name=${searchTerm}&limit=4`,
-			processData: false,
+	const fetchCityData = () => {
+		return new Promise((resolve, reject) => {
+			jQuery(($) => {
+				$.ajax({
+					url: `https://nominatim.openstreetmap.org/search?q=${searchTerm}&format=json`,
+					processData: false,
+					success: (result, status, xhr) => {
+						if (result.length > 0) {
+							Swal.fire({
+								toast: true,
+								text: "Местоположение изменено!",
+								icon: "info",
+								timer: 1000,
+								position: "top",
+								showConfirmButton: false,
+							});
+							resolve(true);
+						} else {
+							resolve(false);
+						}
+					},
+					error: (xhr, status, error) => {
+						$("#searchWeather").val(" ");
+						closeUtilityComponent();
 
-			headers: {
-				"X-Api-Key": XAPIKEY,
-			},
-			success: (result, status, xhr) => {
-				if (xhr.status != 200) {
-					Swal.fire({
-						toast: true,
-						position: "top",
-						text: "Что-то пошло не так!",
-						icon: "info",
-						showConfirmButton: false,
-						timer: 1000,
-					});
-				} else {
-					updateDataArray(result);
-				}
-			},
-			error: (xhr, status, error) => {
-				$("#searchWeather").val(" ");
-				closeUtilityComponent();
-
-				if (error == "") {
-					Swal.fire({
-						toast: true,
-						text: "Ошибка сети!",
-						icon: "info",
-						timer: 1000,
-						position: "top",
-						showConfirmButton: false,
-					}).then((willProceed) => {
-						scrollToElement("weatherContainer");
-					});
-				} else {
-					Swal.fire({
-						toast: true,
-						text: "Не найдено!",
-						icon: "warning",
-						timer: 1000,
-						position: "top",
-						showConfirmButton: false,
-					}).then((willProceed) => {
-						scrollToElement("weatherContainer");
-					});
-				}
-			},
+						if (error == "") {
+							Swal.fire({
+								toast: true,
+								text: "Ошибка сети!",
+								icon: "info",
+								timer: 1000,
+								position: "top",
+								showConfirmButton: false,
+							});
+						} else {
+							Swal.fire({
+								toast: true,
+								text: "Не найдено!",
+								icon: "warning",
+								timer: 1000,
+								position: "top",
+								showConfirmButton: false,
+							});
+						}
+						resolve(false);
+					},
+				});
+			});
 		});
-	});
+	};
+
+	isMustBeUpdated = await fetchCityData();
+
+	return isMustBeUpdated;
 };
 
 export let weatherSvg;
@@ -153,21 +156,21 @@ export const checkWeatherCode = (code) => {
 		code !== 781
 	) {
 		weatherSvg = Haze;
-	} else if (code === 751) {
+	} else if (code == 751) {
 		weatherSvg = Sand;
-	} else if (code === 781) {
+	} else if (code == 781) {
 		weatherSvg = Tornado;
 	} else if (code >= 701 && code < 800) {
 		weatherSvg = Mist;
-	} else if (code === 800) {
+	} else if (code == 800) {
 		weatherSvg = ClearSky;
-	} else if (code === 801) {
+	} else if (code == 801) {
 		weatherSvg = FewClouds;
-	} else if (code === 802) {
+	} else if (code == 802) {
 		weatherSvg = ScatteredClouds;
-	} else if (code === 803) {
+	} else if (code == 803) {
 		weatherSvg = BrokenClouds;
-	} else if (code === 804) {
+	} else if (code == 804) {
 		weatherSvg = OvercastClouds;
 	} else {
 		weatherSvg = "";
@@ -253,6 +256,105 @@ export const getCurrentWeather = (location) => {
 						showConfirmButton: false,
 					}).then((willProceed) => {
 						scrollToElement("weatherContainer");
+					});
+				}
+			},
+		});
+	});
+};
+export const updateReactDomForecast = (result) => {
+	jQuery(($) => {
+		$.noConflict();
+		db.create(
+			`WEATHER_FORECAST_TIME_-1`,
+			`${utilis.convertTo24Hour(
+				utilis.getTimeFromDateString(result.list[0].dt_txt)
+			)}`
+		);
+		db.create(`WEATHER_FORECAST_ICON_-1`, `${result.list[0].weather[0].id}`);
+		db.create(
+			`WEATHER_FORECAST_UNIT_-1`,
+			`${Math.ceil(result.list[0].main.temp)}`
+		);
+		db.create(
+			`WEATHER_FORECAST_HUMIDITY_-1`,
+			`${result.list[0].main.humidity}`
+		);
+		db.create(
+			`WEATHER_FORECAST_PRESSURE_-1`,
+			`${result.list[0].main.pressure * 0.75}`
+		);
+		db.create(`WEATHER_FORECAST_WIND_-1`, `${result.list[0].wind.speed}`);
+		db.create(
+			`WEATHER_FORECAST_DESCRIPTION_-1`,
+			`${result.list[0].weather[0].description}`
+		);
+	});
+};
+
+export const getForecastWeather = () => {
+	jQuery(($) => {
+		$.noConflict();
+		const $API_KEY = "cd34f692e856e493bd936095b256b337";
+		const $WEATHER_UNIT = db.get("WEATHER_UNIT") || "metric";
+		const $user_city = db.get("USER_DEFAULT_LOCATION");
+		const $user_latitude = db.get("USER_LATITUDE");
+		const $user_longitude = db.get("USER_LONGITUDE");
+		let FORECAST_URL;
+		if (
+			$user_city == null &&
+			$user_latitude == null &&
+			$user_longitude == null
+		) {
+			Swal.fire({
+				text: "Местоположение не найдено!",
+				icon: "error",
+				timer: 3000,
+				toast: true,
+				showConfirmButton: false,
+				position: "top",
+			}).then((willProceed) => {
+				return;
+			});
+		} else if (
+			$user_city == null &&
+			$user_latitude != null &&
+			$user_longitude != null
+		) {
+			FORECAST_URL = `https://api.openweathermap.org/data/2.5/forecast?lat=${$user_latitude}&lon=${$user_longitude}&appid=${$API_KEY}&units=${$WEATHER_UNIT}&lang=ru`;
+		} else {
+			FORECAST_URL = `https://api.openweathermap.org/data/2.5/forecast?q=${$user_city}&appid=${$API_KEY}&units=${$WEATHER_UNIT}&lang=ru`;
+		}
+		$.ajax({
+			url: FORECAST_URL,
+			success: (result, status, xhr) => {
+				if (result.cod == 200) {
+					updateReactDomForecast(result);
+				}
+			},
+
+			error: (xhr, status, error) => {
+				if (error == "") {
+					Swal.fire({
+						toast: true,
+						text: "Ошибка сети!",
+						icon: "info",
+						timer: 1000,
+						position: "top",
+						showConfirmButton: false,
+					}).then((willProceed) => {
+						scrollToElement("forecastPage");
+					});
+				} else {
+					Swal.fire({
+						toast: true,
+						text: error,
+						icon: "warning",
+						timer: 1000,
+						position: "top",
+						showConfirmButton: false,
+					}).then((willProceed) => {
+						scrollToElement("forecastPage");
 					});
 				}
 			},

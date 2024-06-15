@@ -21,6 +21,7 @@ import * as currentWeather from "./../apis/getCurrentWeather";
 import Swal from "sweetalert2";
 import Modal from "../components/modal";
 import SidePanel from "../components/sidePanel";
+import * as utilis from "./../inc/scripts/utilities";
 
 const WeatherApp = () => {
 	if (!db.get("HOME_PAGE_SEEN")) {
@@ -30,26 +31,14 @@ const WeatherApp = () => {
 	const [isAnimated, setIsAnimated] = useState(false);
 	const [selectedData, setSelectedData] = useState(null);
 	const [componentToInsert, setComponentToInsert] = useState("");
-	const { weatherInput, setWeatherInput } = useContext(AppContext);
 	const { forecastData, setForecastData } = useContext(AppContext);
 	const [currentWeatherForDay, setCurrentWeatherForDay] = useState([]);
 	const [isSidePanelOpen, setIsSidePanelOpen] = useState(false);
+	const [isProcess, setIsProcess] = useState(false);
 
-	useEffect(() => {
-		const timeoutId = setTimeout(() => {
-			setIsSidePanelOpen(true);
-		}, 1000);
+	const closeSidePanel = () => setIsSidePanelOpen(false);
 
-		return () => clearTimeout(timeoutId);
-	}, []);
-
-	const closeSidePanel = () => {
-		setIsSidePanelOpen(false);
-	};
-
-	const handleCloseModal = () => {
-		setShowModal(false);
-	};
+	const handleCloseModal = () => setShowModal(false);
 
 	let savedLocation = db.get("USER_DEFAULT_LOCATION");
 
@@ -76,6 +65,72 @@ const WeatherApp = () => {
 		}
 	}
 
+	const mapDbSavedData = () => {
+		const count = 8;
+
+		let weatherData = [];
+
+		for (let i = 0; i < count; i++) {
+			const FORECAST_TIME =
+				forecastData &&
+				utilis.convertTo24Hour(
+					utilis.getTimeFromDateString(forecastData.list[i].dt_txt)
+				);
+
+			const FORECAST_ICON = forecastData && forecastData.list[i].weather[0].id;
+
+			const FORECAST_UNIT = forecastData && forecastData.list[i].main.temp;
+
+			const FORECAST_HUMIDITY =
+				forecastData && forecastData.list[i].main.humidity;
+
+			let pressure = forecastData && forecastData.list[i].main.pressure * 0.75;
+
+			const FORECAST_PRESSURE = forecastData && pressure;
+
+			const FORECAST_WIND = forecastData && forecastData.list[i].wind.speed;
+
+			const FORECAST_DESCRIPTION =
+				forecastData && forecastData.list[i].weather[0].description;
+
+			weatherData.push(
+				new MappedSavedDataTemplate(
+					i,
+					FORECAST_TIME,
+					formHandler.checkWeatherCode(parseInt(FORECAST_ICON)),
+					String(FORECAST_UNIT),
+					FORECAST_HUMIDITY,
+					FORECAST_PRESSURE,
+					FORECAST_WIND,
+					FORECAST_DESCRIPTION
+				)
+			);
+		}
+
+		setCurrentWeatherForDay(weatherData);
+	};
+
+	const testSearch = () => {
+		addUtilityComponentHeight();
+		setComponentToInsert(<SearchComponent />);
+	};
+
+	useEffect(() => {
+		mapDbSavedData();
+	}, [forecastData]);
+
+	useEffect(() => {
+		const timeoutId = setTimeout(() => {
+			setIsSidePanelOpen(true);
+		}, 1000);
+
+		return () => clearTimeout(timeoutId);
+	}, []);
+
+	useEffect(() => {
+		formHandler.handleWeatherForm1(savedLocation);
+	}, [savedLocation]);
+
 	useEffect(() => {
 		jQuery(($) => {
 			$.noConflict();
@@ -84,15 +139,16 @@ const WeatherApp = () => {
 			const $user_city = db.get("USER_DEFAULT_LOCATION");
 			const $user_latitude = db.get("USER_LATITUDE");
 			const $user_longitude = db.get("USER_LONGITUDE");
+
 			let FORECAST_URL;
+
 			if (
 				$user_city == null &&
 				$user_latitude == null &&
 				$user_longitude == null
 			) {
-				console.log(typeof $user_city);
 				Swal.fire({
-					text: "Сохраненное местоположение не найдено!",
+					text: "Местоположение не найдено!",
 					icon: "error",
 					timer: 3000,
 					toast: true,
@@ -110,6 +166,7 @@ const WeatherApp = () => {
 			} else {
 				FORECAST_URL = `https://api.openweathermap.org/data/2.5/forecast?q=${$user_city}&appid=${$API_KEY}&units=${$WEATHER_UNIT}&lang=ru`;
 			}
+
 			$.ajax({
 				url: FORECAST_URL,
 				success: (result, status, xhr) => {
@@ -145,59 +202,44 @@ const WeatherApp = () => {
 				},
 			});
 		});
-	}, []);
 
-	useEffect(() => {
-		formHandler.handleWeatherForm1(savedLocation);
-	}, [weatherInput]);
-
-	useEffect(() => {
-		mapDbSavedData();
-	}, [forecastData]);
-
-	const mapDbSavedData = () => {
-		const count = 8;
-
-		let weatherData = [];
-
-		for (let i = 0; i < count; i++) {
-			const FORECAST_TIME =
-				db.get(`WEATHER_FORECAST_TIME_${i}`) || `${i * 3}:00`;
-			const FORECAST_ICON = forecastData && forecastData.list[i].weather[0].id;
-			const FORECAST_UNIT = forecastData && forecastData.list[i].main.temp;
-			const FORECAST_HUMIDITY =
-				forecastData && forecastData.list[i].main.humidity;
-			let pressure = forecastData && forecastData.list[i].main.pressure * 0.75;
-			const FORECAST_PRESSURE = forecastData && pressure;
-			const FORECAST_WIND = forecastData && forecastData.list[i].wind.speed;
-			const FORECAST_DESCRIPTION =
-				forecastData && forecastData.list[i].weather[0].description;
-
-			weatherData.push(
-				new MappedSavedDataTemplate(
-					i,
-					FORECAST_TIME,
-					formHandler.checkWeatherCode(parseInt(FORECAST_ICON)),
-					String(FORECAST_UNIT),
-					FORECAST_HUMIDITY,
-					FORECAST_PRESSURE,
-					FORECAST_WIND,
-					FORECAST_DESCRIPTION
-				)
-			);
-		}
-
-		setCurrentWeatherForDay(weatherData);
-	};
+	}, [savedLocation, isProcess]);
 
 	const SearchComponent = () => {
 		const [searchValue, setSearchValue] = useState("");
+
+		const [searchValueMain, setSearchValueMain] = useState("");
+
 		const updateSearchValue = useCallback(
 			debounce((str) => {
-				setSearchValue(str);
+				setSearchValueMain(str);
 			}, 200),
 			[]
 		);
+
+		const searchHandler = async (e) => {
+			e.preventDefault();
+
+			const isMustBeUpdated = await formHandler.findCity(searchValueMain);
+
+			if (isMustBeUpdated) {
+				formHandler.handleWeatherForm(savedLocation);
+				db.update("USER_DEFAULT_LOCATION", searchValueMain);
+			} else {
+				Swal.fire({
+					toast: true,
+					text: "Не найдено!",
+					icon: "warning",
+					timer: 1000,
+					position: "top",
+					showConfirmButton: false,
+				});
+
+				formHandler.closeUtilityComponent()
+			}
+
+			setIsProcess(prev => !prev)
+		};
 
 		const changeInput = (e) => {
 			setSearchValue(e.target.value);
@@ -207,20 +249,13 @@ const WeatherApp = () => {
 		const onCloseHandle = () => {
 			formHandler.closeUtilityComponent();
 		};
+
 		return (
 			<section className="cmp d-flex align-items-center justify-content-center flex-column my-5">
 				<span className="close" onClick={onCloseHandle}>
 					X
 				</span>
-				<form
-					id="searchWeatherForm"
-					onSubmit={(e) => {
-						formHandler.handleWeatherForm(e);
-						setWeatherInput();
-					}}
-					onChange={(e) => {
-						setSearchValue(e.target.value);
-					}}>
+				<form id="searchWeatherForm">
 					<label htmlFor="searchWeather" className="py-2">
 						Поиск по городу
 					</label>
@@ -242,55 +277,15 @@ const WeatherApp = () => {
 					</p>
 
 					<section className="d-none "></section>
-					<SearchMenuComponent search={searchValue} />
 					<Button
 						text="Сохранить"
 						className="shadow brand-btn-3-secondary toggle-width-3 my-5 text-dark p-2"
 						id="searchSavedLocationWeather"
-						onClick={(e) => {
-							formHandler.handleWeatherForm(e, savedLocation);
-							setWeatherInput();
-						}}
+						onClick={searchHandler}
 					/>
 				</form>
 			</section>
 		);
-	};
-
-	const SearchMenuComponent = ({ search }) => {
-		const [dataArray, changeDataArray] = useState([]);
-		useEffect(() => {
-			if (search.length > 3) {
-				formHandler.findCity(search, changeDataArray);
-			}
-		}, [search]);
-
-		function clickHandler(e) {
-			jQuery("#searchWeather").val(e.target.textContent);
-			formHandler.handleWeatherForm(e, savedLocation);
-			setWeatherInput();
-		}
-
-		return (
-			<section className="cmp d-flex align-items-center justify-content-start bg-white px-2 mt-2 rounded">
-				<ul className="m-0 p-0">
-					{dataArray.map((data, ind) => (
-						<li key={ind} onClick={clickHandler} style={{ cursor: "pointer" }}>
-							<p
-								className="text-dark text-left m-0"
-								style={{ fontSize: "14px" }}>
-								{data.name}
-							</p>
-						</li>
-					))}
-				</ul>
-			</section>
-		);
-	};
-
-	const testSearch = () => {
-		addUtilityComponentHeight();
-		setComponentToInsert(<SearchComponent />);
 	};
 
 	return (

@@ -1,19 +1,62 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import Footer from "../components/footer";
 import Button from "../components/button";
 import Spinner from "../components/spinner";
 import { db } from "../backend/app_backend";
 import * as settings from "./../backend/settings";
 import Header from "../components/header";
+import Swal from "sweetalert2";
+import * as formHandler from "./../apis/getCurrentWeather";
+import { debounce } from "lodash";
+import { useNavigate } from "react-router-dom";
 
 const Settings = () => {
-
-	const [defaultLocation, setDefaultLocation] = useState(
-		settings.getDefaultLocation()
-	);
+	const navigator = useNavigate()
 	const [weatherUnit, setWeatherUnit] = useState();
 	let trackedLocation = db.get("TRACK_SAVED_LOCATION_WEATHER");
-	let trackedLocationLegit = trackedLocation === "true" ? true : false;
+	let trackedLocationLegit = trackedLocation == "true" ? true : false;
+	let savedLocation = db.get("USER_DEFAULT_LOCATION");
+
+	const [searchValue, setSearchValue] = useState(savedLocation);
+
+	const updateSearchValue = useCallback(
+		debounce((str) => {
+			setSearchValue(str);
+		}, 200),
+		[]
+	);
+
+	const clickHandler = async (e) => {
+		e.preventDefault();
+
+		const isMustBeUpdated = await formHandler.findCity(searchValue);
+
+		if (isMustBeUpdated) {
+			formHandler.handleWeatherForm(searchValue);
+			db.update("USER_DEFAULT_LOCATION", searchValue);
+		} else {
+			Swal.fire({
+				toast: true,
+				text: "Не найдено!",
+				icon: "warning",
+				timer: 1000,
+				position: "top",
+				showConfirmButton: false,
+			});
+			formHandler.closeUtilityComponent()
+		}
+	};
+
+	const changeInput = (e) => {
+		setSearchValue(e.target.value);
+		updateSearchValue(e.target.value);
+	};
+
+	const onDestroy = () => {
+		settings.restoreFactorySettings()
+
+		navigator('/')
+	}
 
 	return (
 		<React.Fragment>
@@ -28,10 +71,7 @@ const Settings = () => {
 				</section>
 				<section className="d-flex align-items-start justify-content-center w-50 m-auto setting-btn">
 					<section className="settings">
-						<form
-							action=""
-							id="settingsForm"
-							onSubmit={(e) => e.preventDefault()}>
+						<form action="" id="settingsForm">
 							<label
 								htmlFor="defaultLocation "
 								className="brand-small-text py-3">
@@ -42,19 +82,15 @@ const Settings = () => {
 								name="defaultLocation"
 								id="defaultLocation"
 								className="form-control p-3 my-1"
-								value={defaultLocation}
-								placeholder={"Введите город для отслеживания..."}
-								onChange={(e) => {
-									setDefaultLocation(e.target.value);
-								}}
+								value={searchValue}
+								placeholder={"Введите город"}
+								onChange={changeInput}
 							/>
 							<section className="my-2 d-md-flex align-items-center justify-content-md-center d-lg-block w-50 m-auto">
 								<Button
 									text="Сохранить местоположение"
 									className="shadow brand-btn-3 my-5"
-									onClick={(e) => {
-										settings.saveLocation(e);
-									}}
+									onClick={(e) => clickHandler(e)}
 								/>
 							</section>
 
@@ -105,7 +141,7 @@ const Settings = () => {
 									<Button
 										text="Сбросить настройки"
 										className="shadow brand-btn-3-secondary toggle-width-3 my-5 text-dark p-2"
-										onClick={settings.restoreFactorySettings}
+										onClick={onDestroy}
 									/>
 								</section>
 								<p className="brand-small-text">
